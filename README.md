@@ -51,7 +51,77 @@ const coreybaines = {
 
 ---
 <!--START_SECTION:waka-->
+![Profile Views](http://img.shields.io/badge/Profile%20Views-0-blue)
 
+![Lines of code](https://img.shields.io/badge/From%20Hello%20World%20I%27ve%20Written-391173%20lines%20of%20code-blue)
+
+**🐱 My Github Data** 
+
+> 🏆 1,922 Contributions in the Year 2021
+ > 
+> 📦 189.6 kB Used in Github's Storage 
+ > 
+> 💼 Opted to Hire
+ > 
+> 📜 20 Public Repositories 
+ > 
+> 🔑 1 Private Repository 
+ > 
+**I'm an Early 🐤** 
+
+```text
+🌞 Morning    229 commits    ██████████░░░░░░░░░░░░░░░   40.53% 
+🌆 Daytime    303 commits    █████████████░░░░░░░░░░░░   53.63% 
+🌃 Evening    20 commits     █░░░░░░░░░░░░░░░░░░░░░░░░   3.54% 
+🌙 Night      13 commits     ░░░░░░░░░░░░░░░░░░░░░░░░░   2.3%
+
+```
+📅 **I'm Most Productive on Friday** 
+
+```text
+Monday       92 commits     ████░░░░░░░░░░░░░░░░░░░░░   16.28% 
+Tuesday      112 commits    █████░░░░░░░░░░░░░░░░░░░░   19.82% 
+Wednesday    120 commits    █████░░░░░░░░░░░░░░░░░░░░   21.24% 
+Thursday     109 commits    ████░░░░░░░░░░░░░░░░░░░░░   19.29% 
+Friday       122 commits    █████░░░░░░░░░░░░░░░░░░░░   21.59% 
+Saturday     1 commits      ░░░░░░░░░░░░░░░░░░░░░░░░░   0.18% 
+Sunday       9 commits      ░░░░░░░░░░░░░░░░░░░░░░░░░   1.59%
+
+```
+
+
+📊 **This Week I Spent My Time On** 
+
+```text
+⌚︎ Time Zone: Australia/Sydney
+
+💬 Programming Languages: 
+No Activity Tracked This Week
+
+🔥 Editors: 
+No Activity Tracked This Week
+
+💻 Operating System: 
+No Activity Tracked This Week
+
+```
+
+**I Mostly Code in Swift** 
+
+```text
+Swift                    11 repos            ██████████████████░░░░░░░   73.33% 
+Java                     3 repos             █████░░░░░░░░░░░░░░░░░░░░   20.0% 
+C++                      1 repo              █░░░░░░░░░░░░░░░░░░░░░░░░   6.67%
+
+```
+
+
+**Timeline**
+
+![Chart not found](https://raw.githubusercontent.com/coreybain/coreybain/main/charts/bar_graph.png) 
+
+
+ Last Updated on 26/06/2021
 <!--END_SECTION:waka-->
 
 **These Readme stats are generated using github action [awesome-readme-stats](https://github.com/anmol098/waka-readme-stats)**
