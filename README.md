@@ -22,6 +22,8 @@ npx coreybaines
 const coreybaines = {
     pronouns: "He" | "Him",
     code: ["Objective-c", "Swift/UI", "Javascript", "Typescript", "React", "Node", "Java"],
+    employer: "Corporate Interactive",
+    role: "Lead Software Engineer",
     askMeAbout: ["ios/mac", "web dev", "tech", "coffee", "exploring"],
     technologies: {
         backEnd: {
