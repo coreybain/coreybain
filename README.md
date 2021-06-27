@@ -48,6 +48,7 @@ const coreybaines = {
     funFact: "There are two ways to write error-free programs; only the third one works"
 };
 ```
+<a href="https://www.buymeacoffee.com/coreybaines" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-red.png" alt="Buy Me A Coffee" width="150" ></a>
 
 <img src="https://media.giphy.com/media/LnQjpWaON8nhr21vNW/giphy.gif" width="60"> <em><b>I love connecting with different people</b> so if you want to say <b>hi, I'll be happy to meet you more!</b> 😊</em>
 
