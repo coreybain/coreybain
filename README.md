@@ -60,7 +60,7 @@ const coreybaines = {
 
 **🐱 My GitHub Data** 
 
-> 🏆 2,411 Contributions in the Year 2021
+> 🏆 2,430 Contributions in the Year 2021
  > 
 > 📦 190.1 kB Used in GitHub's Storage 
  > 
@@ -82,11 +82,11 @@ const coreybaines = {
 📅 **I'm Most Productive on Thursday** 
 
 ```text
-Monday       126 commits    ███░░░░░░░░░░░░░░░░░░░░░░   15.37% 
+Monday       116 commits    ███░░░░░░░░░░░░░░░░░░░░░░   14.15% 
 Tuesday      123 commits    ███░░░░░░░░░░░░░░░░░░░░░░   15.0% 
-Wednesday    140 commits    ████░░░░░░░░░░░░░░░░░░░░░   17.07% 
-Thursday     182 commits    █████░░░░░░░░░░░░░░░░░░░░   22.2% 
-Friday       176 commits    █████░░░░░░░░░░░░░░░░░░░░   21.46% 
+Wednesday    138 commits    ████░░░░░░░░░░░░░░░░░░░░░   16.83% 
+Thursday     192 commits    █████░░░░░░░░░░░░░░░░░░░░   23.41% 
+Friday       178 commits    █████░░░░░░░░░░░░░░░░░░░░   21.71% 
 Saturday     35 commits     █░░░░░░░░░░░░░░░░░░░░░░░░   4.27% 
 Sunday       38 commits     █░░░░░░░░░░░░░░░░░░░░░░░░   4.63%
 
@@ -124,7 +124,7 @@ C++                      1 repo              █░░░░░░░░░░�
 ![Chart not found](https://raw.githubusercontent.com/coreybain/coreybain/main/charts/bar_graph.png) 
 
 
- Last Updated on 18/11/2021
+ Last Updated on 19/11/2021
 <!--END_SECTION:waka-->
 
 **These Readme stats are generated using github action [awesome-readme-stats](https://github.com/anmol098/waka-readme-stats)**
