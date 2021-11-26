@@ -60,7 +60,7 @@ const coreybaines = {
 
 **🐱 My GitHub Data** 
 
-> 🏆 2,491 Contributions in the Year 2021
+> 🏆 2,497 Contributions in the Year 2021
  > 
 > 📦 190.1 kB Used in GitHub's Storage 
  > 
@@ -85,10 +85,10 @@ const coreybaines = {
 Monday       144 commits    ████░░░░░░░░░░░░░░░░░░░░░   17.54% 
 Tuesday      118 commits    ███░░░░░░░░░░░░░░░░░░░░░░   14.37% 
 Wednesday    134 commits    ████░░░░░░░░░░░░░░░░░░░░░   16.32% 
-Thursday     183 commits    █████░░░░░░░░░░░░░░░░░░░░   22.29% 
+Thursday     186 commits    █████░░░░░░░░░░░░░░░░░░░░   22.66% 
 Friday       171 commits    █████░░░░░░░░░░░░░░░░░░░░   20.83% 
 Saturday     35 commits     █░░░░░░░░░░░░░░░░░░░░░░░░   4.26% 
-Sunday       36 commits     █░░░░░░░░░░░░░░░░░░░░░░░░   4.38%
+Sunday       33 commits     █░░░░░░░░░░░░░░░░░░░░░░░░   4.02%
 
 ```
 
@@ -124,7 +124,7 @@ C++                      1 repo              █░░░░░░░░░░�
 ![Chart not found](https://raw.githubusercontent.com/coreybain/coreybain/main/charts/bar_graph.png) 
 
 
- Last Updated on 25/11/2021
+ Last Updated on 26/11/2021
 <!--END_SECTION:waka-->
 
 **These Readme stats are generated using github action [awesome-readme-stats](https://github.com/anmol098/waka-readme-stats)**
