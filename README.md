@@ -56,11 +56,11 @@ const coreybaines = {
 <!--START_SECTION:waka-->
 ![Profile Views](http://img.shields.io/badge/Profile%20Views-0-blue)
 
-![Lines of code](https://img.shields.io/badge/From%20Hello%20World%20I%27ve%20Written-3835%20lines%20of%20code-blue)
+![Lines of code](https://img.shields.io/badge/From%20Hello%20World%20I%27ve%20Written-3834%20lines%20of%20code-blue)
 
 **🐱 My GitHub Data** 
 
-> 🏆 2,576 Contributions in the Year 2021
+> 🏆 2,596 Contributions in the Year 2021
  > 
 > 📦 190.1 kB Used in GitHub's Storage 
  > 
@@ -73,20 +73,20 @@ const coreybaines = {
 **I'm an Early 🐤** 
 
 ```text
-🌞 Morning    367 commits    ███████████░░░░░░░░░░░░░░   44.59% 
-🌆 Daytime    346 commits    ██████████░░░░░░░░░░░░░░░   42.04% 
-🌃 Evening    83 commits     ██░░░░░░░░░░░░░░░░░░░░░░░   10.09% 
+🌞 Morning    375 commits    ███████████░░░░░░░░░░░░░░   45.57% 
+🌆 Daytime    339 commits    ██████████░░░░░░░░░░░░░░░   41.19% 
+🌃 Evening    82 commits     ██░░░░░░░░░░░░░░░░░░░░░░░   9.96% 
 🌙 Night      27 commits     ░░░░░░░░░░░░░░░░░░░░░░░░░   3.28%
 
 ```
 📅 **I'm Most Productive on Thursday** 
 
 ```text
-Monday       137 commits    ████░░░░░░░░░░░░░░░░░░░░░   16.65% 
-Tuesday      142 commits    ████░░░░░░░░░░░░░░░░░░░░░   17.25% 
-Wednesday    142 commits    ████░░░░░░░░░░░░░░░░░░░░░   17.25% 
-Thursday     171 commits    █████░░░░░░░░░░░░░░░░░░░░   20.78% 
-Friday       162 commits    █████░░░░░░░░░░░░░░░░░░░░   19.68% 
+Monday       126 commits    ███░░░░░░░░░░░░░░░░░░░░░░   15.31% 
+Tuesday      135 commits    ████░░░░░░░░░░░░░░░░░░░░░   16.4% 
+Wednesday    151 commits    ████░░░░░░░░░░░░░░░░░░░░░   18.35% 
+Thursday     175 commits    █████░░░░░░░░░░░░░░░░░░░░   21.26% 
+Friday       167 commits    █████░░░░░░░░░░░░░░░░░░░░   20.29% 
 Saturday     35 commits     █░░░░░░░░░░░░░░░░░░░░░░░░   4.25% 
 Sunday       34 commits     █░░░░░░░░░░░░░░░░░░░░░░░░   4.13%
 
@@ -124,7 +124,7 @@ C++                      1 repo              █░░░░░░░░░░�
 ![Chart not found](https://raw.githubusercontent.com/coreybain/coreybain/main/charts/bar_graph.png) 
 
 
- Last Updated on 01/12/2021
+ Last Updated on 06/12/2021
 <!--END_SECTION:waka-->
 
 **These Readme stats are generated using github action [awesome-readme-stats](https://github.com/anmol098/waka-readme-stats)**
