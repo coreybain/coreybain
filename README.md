@@ -60,7 +60,7 @@ const coreybaines = {
 
 **🐱 My GitHub Data** 
 
-> 🏆 2,683 Contributions in the Year 2021
+> 🏆 0 Contributions in the Year 2022
  > 
 > 📦 190.2 kB Used in GitHub's Storage 
  > 
@@ -124,7 +124,7 @@ C++                      1 repo              █░░░░░░░░░░�
 ![Chart not found](https://raw.githubusercontent.com/coreybain/coreybain/main/charts/bar_graph.png) 
 
 
- Last Updated on 31/12/2021
+ Last Updated on 01/01/2022
 <!--END_SECTION:waka-->
 
 **These Readme stats are generated using github action [awesome-readme-stats](https://github.com/anmol098/waka-readme-stats)**
