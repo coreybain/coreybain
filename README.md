@@ -56,15 +56,15 @@ const coreybaines = {
 <!--START_SECTION:waka-->
 ![Code Time](http://img.shields.io/badge/Code%20Time-0%20secs-blue)
 
-![Profile Views](http://img.shields.io/badge/Profile%20Views-1-blue)
+![Profile Views](http://img.shields.io/badge/Profile%20Views-3-blue)
 
-![Lines of code](https://img.shields.io/badge/From%20Hello%20World%20I%27ve%20Written-28%20Thousand%20lines%20of%20code-blue)
+![Lines of code](https://img.shields.io/badge/From%20Hello%20World%20I%27ve%20Written-32%20Thousand%20lines%20of%20code-blue)
 
 **🐱 My GitHub Data** 
 
-> 🏆 2,717 Contributions in the Year 2022
+> 🏆 2,747 Contributions in the Year 2022
  > 
-> 📦 197.2 kB Used in GitHub's Storage 
+> 📦 197.5 kB Used in GitHub's Storage 
  > 
 > 💼 Opted to Hire
  > 
@@ -75,21 +75,21 @@ const coreybaines = {
 **I'm an Early 🐤** 
 
 ```text
-🌞 Morning    302 commits    ██████████░░░░░░░░░░░░░░░   41.77% 
-🌆 Daytime    390 commits    █████████████░░░░░░░░░░░░   53.94% 
-🌃 Evening    19 commits     ░░░░░░░░░░░░░░░░░░░░░░░░░   2.63% 
-🌙 Night      12 commits     ░░░░░░░░░░░░░░░░░░░░░░░░░   1.66%
+🌞 Morning    312 commits    ██████████░░░░░░░░░░░░░░░   42.74% 
+🌆 Daytime    383 commits    █████████████░░░░░░░░░░░░   52.47% 
+🌃 Evening    21 commits     ░░░░░░░░░░░░░░░░░░░░░░░░░   2.88% 
+🌙 Night      14 commits     ░░░░░░░░░░░░░░░░░░░░░░░░░   1.92%
 
 ```
 📅 **I'm Most Productive on Thursday** 
 
 ```text
-Monday       117 commits    ████░░░░░░░░░░░░░░░░░░░░░   16.18% 
-Tuesday      138 commits    ████░░░░░░░░░░░░░░░░░░░░░   19.09% 
-Wednesday    137 commits    ████░░░░░░░░░░░░░░░░░░░░░   18.95% 
-Thursday     183 commits    ██████░░░░░░░░░░░░░░░░░░░   25.31% 
-Friday       135 commits    ████░░░░░░░░░░░░░░░░░░░░░   18.67% 
-Saturday     10 commits     ░░░░░░░░░░░░░░░░░░░░░░░░░   1.38% 
+Monday       110 commits    ███░░░░░░░░░░░░░░░░░░░░░░   15.07% 
+Tuesday      131 commits    ████░░░░░░░░░░░░░░░░░░░░░   17.95% 
+Wednesday    135 commits    ████░░░░░░░░░░░░░░░░░░░░░   18.49% 
+Thursday     200 commits    ██████░░░░░░░░░░░░░░░░░░░   27.4% 
+Friday       141 commits    ████░░░░░░░░░░░░░░░░░░░░░   19.32% 
+Saturday     10 commits     ░░░░░░░░░░░░░░░░░░░░░░░░░   1.37% 
 Sunday       3 commits      ░░░░░░░░░░░░░░░░░░░░░░░░░   0.41%
 
 ```
@@ -127,7 +127,7 @@ C++                      1 repo              █░░░░░░░░░░�
 ![Chart not found](https://raw.githubusercontent.com/coreybain/coreybain/main/charts/bar_graph.png) 
 
 
- Last Updated on 28/07/2022 01:15:29 UTC
+ Last Updated on 29/07/2022 01:19:14 UTC
 <!--END_SECTION:waka-->
 
 **These Readme stats are generated using github action [awesome-readme-stats](https://github.com/anmol098/waka-readme-stats)**
