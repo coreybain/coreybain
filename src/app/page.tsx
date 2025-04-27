@@ -40,7 +40,7 @@ export default function Home() {
           >
             <span className="text-lg">Create t3 app</span>
             <span className="block text-sm text-gray-500 transition-all group-hover:text-gray-200">
-              The start to all my projects (shoutout to theo & the t3 team)
+              the start to all my projects (shoutout to theo & the t3 team)
             </span>
           </Link>
           {/* <Link
