@@ -8,9 +8,7 @@
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/coreybaines?label=Follow)](https://twitter.com/intent/follow?screen_name=coreybaines)
 [![LinkedIn](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=LinkedIn&logoColor=white&link=https://www.linkedin.com/in/coreybaines/)](https://www.linkedin.com/in/coreybaines/)
-![GitHub followers](https://img.shields.io/github/followers/coreybain?label=Follow&style=social)
 [![Website](https://img.shields.io/badge/Website-46a2f1.svg?&style=flat-square&logo=Google-Chrome&logoColor=white&link=https://coreybaines.com/)](https://coreybaines.com/)
-![](https://visitor-badge.glitch.me/badge?page_id=coreybain.coreybain)
 
 👇 Hit in your console or terminal to connect with me.
 
