@@ -8,9 +8,7 @@
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/coreybaines?label=Follow)](https://twitter.com/intent/follow?screen_name=coreybaines)
 [![LinkedIn](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=LinkedIn&logoColor=white&link=https://www.linkedin.com/in/coreybaines/)](https://www.linkedin.com/in/coreybaines/)
-![GitHub followers](https://img.shields.io/github/followers/coreybain?label=Follow&style=social)
 [![Website](https://img.shields.io/badge/Website-46a2f1.svg?&style=flat-square&logo=Google-Chrome&logoColor=white&link=https://coreybaines.com/)](https://coreybaines.com/)
-![](https://visitor-badge.glitch.me/badge?page_id=coreybain.coreybain)
 
 👇 Hit in your console or terminal to connect with me.
 
@@ -88,16 +86,16 @@ From: 26 June 2021 - To: 26 April 2025
 
 Total Time: 587 hrs 58 mins
 
-JavaScript   243 hrs 50 mins >>>>>>>>>>---------------   41.24 %
-Java         215 hrs 1 min   >>>>>>>>>----------------   36.36 %
-LESS         29 hrs 46 mins  >------------------------   05.04 %
-TypeScript   25 hrs 53 mins  >------------------------   04.38 %
-XML          17 hrs 54 mins  >------------------------   03.03 %
-HTML         16 hrs 40 mins  >------------------------   02.82 %
-GraphQL      13 hrs 30 mins  >------------------------   02.28 %
-CSS          10 hrs 15 mins  -------------------------   01.74 %
-JSON         6 hrs 15 mins   -------------------------   01.06 %
-SCSS         4 hrs 35 mins   -------------------------   00.78 %
+JavaScript   243 hrs 50 mins ██████████▒░░░░░░░░░░░░░░   41.24 %
+Java         215 hrs 1 min   █████████░░░░░░░░░░░░░░░░   36.36 %
+LESS         29 hrs 46 mins  █▒░░░░░░░░░░░░░░░░░░░░░░░   05.04 %
+TypeScript   25 hrs 53 mins  █░░░░░░░░░░░░░░░░░░░░░░░░   04.38 %
+XML          17 hrs 54 mins  ▓░░░░░░░░░░░░░░░░░░░░░░░░   03.03 %
+HTML         16 hrs 40 mins  ▓░░░░░░░░░░░░░░░░░░░░░░░░   02.82 %
+GraphQL      13 hrs 30 mins  ▓░░░░░░░░░░░░░░░░░░░░░░░░   02.28 %
+CSS          10 hrs 15 mins  ▒░░░░░░░░░░░░░░░░░░░░░░░░   01.74 %
+JSON         6 hrs 15 mins   ▒░░░░░░░░░░░░░░░░░░░░░░░░   01.06 %
+SCSS         4 hrs 35 mins   ▒░░░░░░░░░░░░░░░░░░░░░░░░   00.78 %
 ```
 
 <!--END_SECTION:waka-->
