@@ -83,78 +83,22 @@ const coreybaines = {
 
 <!--START_SECTION:waka-->
 
-![Code Time](http://img.shields.io/badge/Code%20Time-591%20hrs%2018%20mins-blue)
+```rust
+From: 26 June 2021 - To: 26 April 2025
 
-![Profile Views](http://img.shields.io/badge/Profile%20Views-0-blue)
+Total Time: 587 hrs 58 mins
 
-![Lines of code](https://img.shields.io/badge/From%20Hello%20World%20I%27ve%20Written-62%20Thousand%20lines%20of%20code-blue)
-
-**🐱 My GitHub Data**
-
-> 🏆 16,403 Contributions in the Year 2022
->
-> 📦 200.4 kB Used in GitHub's Storage
->
-> 💼 Opted to Hire
->
-> 📜 22 Public Repositories
->
-> 🔑 3 Private Repositories
->
-> **I'm an Early 🐤**
-
-```text
-🌞 Morning    634 commits    ██████████░░░░░░░░░░░░░░░   40.88%
-🌆 Daytime    770 commits    ████████████░░░░░░░░░░░░░   49.65%
-🌃 Evening    50 commits     ░░░░░░░░░░░░░░░░░░░░░░░░░   3.22%
-🌙 Night      97 commits     █░░░░░░░░░░░░░░░░░░░░░░░░   6.25%
-
+JavaScript   243 hrs 50 mins >>>>>>>>>>---------------   41.24 %
+Java         215 hrs 1 min   >>>>>>>>>----------------   36.36 %
+LESS         29 hrs 46 mins  >------------------------   05.04 %
+TypeScript   25 hrs 53 mins  >------------------------   04.38 %
+XML          17 hrs 54 mins  >------------------------   03.03 %
+HTML         16 hrs 40 mins  >------------------------   02.82 %
+GraphQL      13 hrs 30 mins  >------------------------   02.28 %
+CSS          10 hrs 15 mins  -------------------------   01.74 %
+JSON         6 hrs 15 mins   -------------------------   01.06 %
+SCSS         4 hrs 35 mins   -------------------------   00.78 %
 ```
-
-📅 **I'm Most Productive on Friday**
-
-```text
-Monday       343 commits    █████░░░░░░░░░░░░░░░░░░░░   22.11%
-Tuesday      318 commits    █████░░░░░░░░░░░░░░░░░░░░   20.5%
-Wednesday    182 commits    ███░░░░░░░░░░░░░░░░░░░░░░   11.73%
-Thursday     279 commits    ████░░░░░░░░░░░░░░░░░░░░░   17.99%
-Friday       401 commits    ██████░░░░░░░░░░░░░░░░░░░   25.85%
-Saturday     13 commits     ░░░░░░░░░░░░░░░░░░░░░░░░░   0.84%
-Sunday       15 commits     ░░░░░░░░░░░░░░░░░░░░░░░░░   0.97%
-
-```
-
-📊 **This Week I Spent My Time On**
-
-```text
-⌚︎ Time Zone: Australia/Sydney
-
-💬 Programming Languages:
-No Activity Tracked This Week
-
-🔥 Editors:
-No Activity Tracked This Week
-
-💻 Operating System:
-No Activity Tracked This Week
-
-```
-
-**I Mostly Code in Swift**
-
-```text
-Swift                    11 repos            ████████████████░░░░░░░░░   64.71%
-Java                     3 repos             ████░░░░░░░░░░░░░░░░░░░░░   17.65%
-TypeScript               2 repos             ███░░░░░░░░░░░░░░░░░░░░░░   11.76%
-C++                      1 repo              █░░░░░░░░░░░░░░░░░░░░░░░░   5.88%
-
-```
-
-**Timeline**
-
-![Chart not found](https://raw.githubusercontent.com/coreybain/coreybain/main/charts/bar_graph.png)
-
-Last Updated on 09/11/2022 01:18:03 UTC
 
 <!--END_SECTION:waka-->
 
