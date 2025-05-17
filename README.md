@@ -82,7 +82,7 @@ const coreybaines = {
 <!--START_SECTION:waka-->
 
 ```rust
-From: 26 June 2021 - To: 14 May 2025
+From: 26 June 2021 - To: 15 May 2025
 
 Total Time: 643 hrs 18 mins
 
