@@ -82,19 +82,19 @@ const coreybaines = {
 <!--START_SECTION:waka-->
 
 ```rust
-From: 26 June 2021 - To: 23 May 2025
+From: 26 June 2021 - To: 24 May 2025
 
-Total Time: 669 hrs 12 mins
+Total Time: 672 hrs 14 mins
 
-JavaScript   244 hrs 47 mins █████████░░░░░░░░░░░░░░░░   36.34 %
-Java         215 hrs 1 min   ████████░░░░░░░░░░░░░░░░░   31.92 %
-TypeScript   102 hrs 9 mins  ███▓░░░░░░░░░░░░░░░░░░░░░   15.16 %
-LESS         29 hrs 46 mins  █░░░░░░░░░░░░░░░░░░░░░░░░   04.42 %
-XML          17 hrs 54 mins  ▓░░░░░░░░░░░░░░░░░░░░░░░░   02.66 %
-HTML         16 hrs 40 mins  ▓░░░░░░░░░░░░░░░░░░░░░░░░   02.48 %
-GraphQL      13 hrs 30 mins  ▓░░░░░░░░░░░░░░░░░░░░░░░░   02.01 %
+JavaScript   244 hrs 47 mins █████████░░░░░░░░░░░░░░░░   36.17 %
+Java         215 hrs 1 min   ████████░░░░░░░░░░░░░░░░░   31.78 %
+TypeScript   105 hrs 10 mins ████░░░░░░░░░░░░░░░░░░░░░   15.54 %
+LESS         29 hrs 46 mins  █░░░░░░░░░░░░░░░░░░░░░░░░   04.40 %
+XML          17 hrs 54 mins  ▓░░░░░░░░░░░░░░░░░░░░░░░░   02.65 %
+HTML         16 hrs 40 mins  ▓░░░░░░░░░░░░░░░░░░░░░░░░   02.46 %
+GraphQL      13 hrs 30 mins  ▓░░░░░░░░░░░░░░░░░░░░░░░░   02.00 %
 CSS          10 hrs 15 mins  ▒░░░░░░░░░░░░░░░░░░░░░░░░   01.52 %
-JSON         8 hrs 38 mins   ▒░░░░░░░░░░░░░░░░░░░░░░░░   01.28 %
+JSON         8 hrs 39 mins   ▒░░░░░░░░░░░░░░░░░░░░░░░░   01.28 %
 SCSS         4 hrs 35 mins   ▒░░░░░░░░░░░░░░░░░░░░░░░░   00.68 %
 ```
 
