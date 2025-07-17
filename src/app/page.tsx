@@ -19,8 +19,22 @@ export default function Home() {
             <span className="text-lg text-gray-900 dark:text-gray-100 group-hover:text-white">
               QuoteCloud
             </span>
-            <span className="block text-sm text-gray-600 dark:text-gray-400 transition-all group-hover:text-gray-200">
+            <span className="block px-2 text-sm text-gray-600 dark:text-gray-400 transition-all group-hover:text-gray-200">
               the best way to create sales quotes & proposals with ease.
+            </span>
+          </Link>
+          <Link
+            href="https://apps.apple.com/us/app/traveldocs/id6477499212"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative w-full border border-gray-300 dark:border-gray-600 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm py-3 text-center transition-all duration-300 hover:bg-gray-900 dark:hover:bg-gray-700 hover:text-white dark:hover:text-white rounded-md shadow-sm hover:shadow-md"
+          >
+            <span className="text-lg text-gray-900 dark:text-gray-100 group-hover:text-white">
+              TravelDocs
+            </span>
+            <span className="block px-2 text-sm text-gray-600 dark:text-gray-400 transition-all group-hover:text-gray-200">
+              Smart itinerary manager with real-time updates and offline
+              document storage
             </span>
           </Link>
           <Link
@@ -32,7 +46,7 @@ export default function Home() {
             <span className="text-lg text-gray-900 dark:text-gray-100 group-hover:text-white">
               Youtube
             </span>
-            <span className="block text-sm text-gray-600 dark:text-gray-400 transition-all group-hover:text-gray-200">
+            <span className="block px-2 text-sm text-gray-600 dark:text-gray-400 transition-all group-hover:text-gray-200">
               videos about software dev stuff and work
             </span>
           </Link>
@@ -45,7 +59,7 @@ export default function Home() {
             <span className="text-lg text-gray-900 dark:text-gray-100 group-hover:text-white">
               Create t3 app
             </span>
-            <span className="block text-sm text-gray-600 dark:text-gray-400 transition-all group-hover:text-gray-200">
+            <span className="block px-2 text-sm text-gray-600 dark:text-gray-400 transition-all group-hover:text-gray-200">
               the start to all my projects (shoutout to theo & the t3 team)
             </span>
           </Link>
