@@ -82,14 +82,14 @@ const coreybaines = {
 <!--START_SECTION:waka-->
 
 ```rust
-From: 26 June 2021 - To: 25 January 2026
+From: 26 June 2021 - To: 26 January 2026
 
-Total Time: 1,623 hrs 9 mins
+Total Time: 1,623 hrs 52 mins
 
-TypeScript           932 hrs 7 mins  ██████████████▒░░░░░░░░░░   56.69 %
-JavaScript           261 hrs 6 mins  ████░░░░░░░░░░░░░░░░░░░░░   15.88 %
+TypeScript           932 hrs 49 mins ██████████████▒░░░░░░░░░░   56.71 %
+JavaScript           261 hrs 6 mins  ████░░░░░░░░░░░░░░░░░░░░░   15.87 %
 Java                 217 hrs 7 mins  ███▒░░░░░░░░░░░░░░░░░░░░░   13.20 %
-JSON                 40 hrs 18 mins  ▓░░░░░░░░░░░░░░░░░░░░░░░░   02.45 %
+JSON                 40 hrs 19 mins  ▓░░░░░░░░░░░░░░░░░░░░░░░░   02.45 %
 Swift                33 hrs 56 mins  ▓░░░░░░░░░░░░░░░░░░░░░░░░   02.06 %
 LESS                 29 hrs 46 mins  ▒░░░░░░░░░░░░░░░░░░░░░░░░   01.81 %
 Other                21 hrs 8 mins   ▒░░░░░░░░░░░░░░░░░░░░░░░░   01.29 %
