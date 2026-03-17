@@ -1,47 +1,300 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --card: #ffffff;
-  --card-foreground: #171717;
-  --border: #e5e7eb;
-  --muted: #f3f4f6;
-  --muted-foreground: #6b7280;
-  --accent: #f3f4f6;
-  --accent-foreground: #171717;
+  --color-background: oklch(0.98 0.006 250);
+  --color-foreground: oklch(0.23 0.018 250);
+  --color-surface: oklch(0.995 0.003 250 / 0.84);
+  --color-surface-alt: oklch(0.95 0.01 250 / 0.8);
+  --color-surface-solid: oklch(0.95 0.01 250);
+  --color-border: oklch(0.86 0.01 250 / 0.9);
+  --color-muted-foreground: oklch(0.48 0.018 250);
+  --color-accent: oklch(0.53 0.12 246);
+  --grid-overlay: color-mix(
+    in oklab,
+    var(--color-foreground) 8%,
+    transparent
+  );
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-border: var(--border);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-display);
+  --font-mono: var(--font-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --card: #171717;
-    --card-foreground: #ededed;
-    --border: #374151;
-    --muted: #1f2937;
-    --muted-foreground: #9ca3af;
-    --accent: #1f2937;
-    --accent-foreground: #ededed;
+    --color-background: oklch(0.16 0.016 250);
+    --color-foreground: oklch(0.93 0.012 250);
+    --color-surface: oklch(0.24 0.013 250 / 0.8);
+    --color-surface-alt: oklch(0.28 0.015 250 / 0.85);
+    --color-surface-solid: oklch(0.28 0.015 250);
+    --color-border: oklch(0.36 0.012 250 / 0.85);
+    --color-muted-foreground: oklch(0.74 0.013 250);
+    --color-accent: oklch(0.72 0.1 246);
+    --grid-overlay: color-mix(
+      in oklab,
+      var(--color-foreground) 12%,
+      transparent
+    );
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  color: var(--color-foreground);
+  font-family: var(--font-display), "Avenir Next", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(
+      130% 120% at 12% 0%,
+      color-mix(in oklab, var(--color-accent) 12%, transparent),
+      transparent 48%
+    ),
+    radial-gradient(
+      130% 100% at 100% 100%,
+      color-mix(in oklab, var(--color-accent) 10%, transparent),
+      transparent 54%
+    ),
+    var(--color-background);
+}
+
+main {
+  position: relative;
+  isolation: isolate;
+  --grid-glow-x: 50%;
+  --grid-glow-y: 35%;
+  --grid-glow-opacity: 0;
+}
+
+main > * {
+  position: relative;
+  z-index: 1;
+}
+
+main::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(var(--grid-overlay) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-overlay) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.28;
+  mask-image: radial-gradient(circle at 50% 35%, black 30%, transparent 100%);
+}
+
+main::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(
+      color-mix(in oklab, var(--color-accent) 16%, var(--grid-overlay)) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--color-accent) 16%, var(--grid-overlay)) 1px,
+      transparent 1px
+    );
+  background-size: 40px 40px;
+  opacity: calc(0.38 * var(--grid-glow-opacity));
+  mask-image: radial-gradient(
+    circle 170px at var(--grid-glow-x) var(--grid-glow-y),
+    black 0%,
+    rgb(0 0 0 / 74%) 40%,
+    transparent 100%
+  );
+  transition: opacity 160ms ease-out;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.02em;
+}
+
+code {
+  font-family: var(--font-mono), "SFMono-Regular", Menlo, monospace;
+}
+
+/* ═══════════════════════════════════════════
+   Terminal card – custom properties
+   ═══════════════════════════════════════════ */
+
+:root {
+  /* light-mode terminal palette */
+  --term-bg: oklch(0.96 0.006 250);
+  --term-bg-hover-ring: oklch(0.82 0.012 250 / 0.7);
+  --term-shadow-1: oklch(0.7 0.01 250 / 0.18);
+  --term-shadow-2: oklch(0.5 0.01 250 / 0.08);
+  --term-titlebar: oklch(0.93 0.008 250);
+  --term-body: oklch(0.975 0.004 250);
+  --term-prompt: oklch(0.53 0.12 246);
+  --term-prompt-glow: oklch(0.53 0.12 246 / 0.2);
+  --term-runner: oklch(0.42 0.1 175);
+  --term-command: oklch(0.25 0.018 250);
+  --term-btn-bg: oklch(0.93 0.008 250 / 0.9);
+  --term-btn-text: oklch(0.4 0.01 250);
+  --term-btn-hover-bg: oklch(0.88 0.01 250 / 0.95);
+  --term-btn-hover-text: oklch(0.2 0.015 250);
+  --term-btn-hover-border: oklch(0.72 0.012 250 / 0.7);
+  --term-dropdown-bg: oklch(0.97 0.005 250 / 0.97);
+  --term-dropdown-text: oklch(0.4 0.01 250);
+  --term-dropdown-hover-bg: oklch(0.92 0.008 250);
+  --term-dropdown-hover-text: oklch(0.18 0.012 250);
+  --term-dropdown-active: oklch(0.42 0.1 175);
+  --term-scanline-color: oklch(0 0 0 / 0.012);
+  --term-accent-glow: oklch(0.53 0.12 246 / 0.06);
+  --term-dot-red: oklch(0.63 0.2 25);
+  --term-dot-yellow: oklch(0.8 0.16 85);
+  --term-dot-green: oklch(0.72 0.19 145);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* dark-mode terminal palette */
+    --term-bg: oklch(0.14 0.014 250);
+    --term-bg-hover-ring: oklch(0.34 0.016 250 / 0.6);
+    --term-shadow-1: oklch(0 0 0 / 0.35);
+    --term-shadow-2: oklch(0 0 0 / 0.2);
+    --term-titlebar: oklch(0.12 0.012 250);
+    --term-body: oklch(0.16 0.014 250);
+    --term-prompt: oklch(0.72 0.1 246);
+    --term-prompt-glow: oklch(0.72 0.1 246 / 0.4);
+    --term-runner: oklch(0.78 0.11 175);
+    --term-command: oklch(0.88 0.01 250);
+    --term-btn-bg: oklch(0.2 0.012 250 / 0.9);
+    --term-btn-text: oklch(0.7 0.01 250);
+    --term-btn-hover-bg: oklch(0.26 0.015 250 / 0.95);
+    --term-btn-hover-text: oklch(0.88 0.01 250);
+    --term-btn-hover-border: oklch(0.44 0.015 250 / 0.7);
+    --term-dropdown-bg: oklch(0.18 0.014 250 / 0.97);
+    --term-dropdown-text: oklch(0.7 0.01 250);
+    --term-dropdown-hover-bg: oklch(0.24 0.015 250);
+    --term-dropdown-hover-text: oklch(0.92 0.01 250);
+    --term-dropdown-active: oklch(0.78 0.11 175);
+    --term-scanline-color: oklch(1 0 0 / 0.015);
+    --term-accent-glow: oklch(0.53 0.12 246 / 0.08);
+    --term-dot-red: oklch(0.63 0.2 25);
+    --term-dot-yellow: oklch(0.8 0.16 85);
+    --term-dot-green: oklch(0.72 0.19 145);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   Terminal card – component styles
+   ═══════════════════════════════════════════ */
+
+.terminal-card {
+  background: var(--term-bg);
+  box-shadow:
+    0 0 0 1px oklch(0.28 0.012 250 / 0.5),
+    0 4px 24px var(--term-shadow-1),
+    0 1px 3px var(--term-shadow-2);
+  transition: box-shadow 0.3s ease;
+}
+
+.terminal-card:hover {
+  box-shadow:
+    0 0 0 1px var(--term-bg-hover-ring),
+    0 8px 32px var(--term-shadow-1),
+    0 2px 6px var(--term-shadow-2),
+    0 0 60px -12px var(--term-accent-glow);
+}
+
+.terminal-titlebar {
+  background: var(--term-titlebar);
+}
+
+.terminal-dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.terminal-dot--red {
+  background: var(--term-dot-red);
+}
+
+.terminal-dot--yellow {
+  background: var(--term-dot-yellow);
+}
+
+.terminal-dot--green {
+  background: var(--term-dot-green);
+}
+
+.terminal-body {
+  background: var(--term-body);
+}
+
+.terminal-prompt {
+  color: var(--term-prompt);
+  text-shadow: 0 0 8px var(--term-prompt-glow);
+}
+
+.terminal-runner {
+  color: var(--term-runner);
+}
+
+.terminal-command {
+  color: var(--term-command);
+}
+
+.terminal-copy-btn {
+  background: var(--term-btn-bg);
+  color: var(--term-btn-text);
+  backdrop-filter: blur(8px);
+}
+
+.terminal-copy-btn:hover {
+  background: var(--term-btn-hover-bg);
+  color: var(--term-btn-hover-text);
+  border-color: var(--term-btn-hover-border);
+}
+
+.terminal-dropdown {
+  background: var(--term-dropdown-bg);
+  backdrop-filter: blur(16px);
+  animation: terminal-dropdown-in 0.15s ease-out;
+}
+
+@keyframes terminal-dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.terminal-dropdown-item {
+  color: var(--term-dropdown-text);
+}
+
+.terminal-dropdown-item:hover {
+  background: var(--term-dropdown-hover-bg);
+  color: var(--term-dropdown-hover-text);
+}
+
+.terminal-dropdown-item--active {
+  color: var(--term-dropdown-active);
+}
+
+.terminal-scanline {
+  background: repeating-linear-gradient(
+    0deg,
+    var(--term-scanline-color) 0px,
+    var(--term-scanline-color) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
 }
