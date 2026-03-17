@@ -1,8 +1,8 @@
 import "server-only";
 
-import { cache } from "react";
 import { fetchQuery } from "convex/nextjs";
 import { api } from "@convex/_generated/api";
+import { unstable_cache } from "next/cache";
 import {
   capabilities as fallbackCapabilities,
   experienceEntries as fallbackExperienceEntries,
@@ -33,6 +33,8 @@ type AboutPageData = {
   capabilities: Capability[];
   experienceEntries: ExperienceEntry[];
 };
+
+const PUBLIC_SITE_REVALIDATE_SECONDS = 3600;
 
 function mapProfile(
   profile: {
@@ -87,48 +89,142 @@ async function withFallback<T>(loader: () => Promise<T>, fallback: T): Promise<T
   }
 }
 
-export const getHomePageData = cache(async (): Promise<HomePageData> => {
-  return withFallback(async () => {
-    const result = await fetchQuery(api.content.getHomeData, {});
+const getHomePageDataCached = unstable_cache(
+  async (): Promise<HomePageData> =>
+    withFallback(
+      async () => {
+        const result = await fetchQuery(api.content.getHomeData, {});
 
-    return {
-      profile: mapProfile(result.profile, result.settings?.notificationEmail),
-      capabilities: result.capabilities as Capability[],
-      featuredProjects: result.featuredProjects as Project[],
-      latestPosts: result.latestPosts as Post[],
-      featuredExperiments: result.featuredExperiments as Experiment[],
-    };
-  }, {
-    profile: mapProfile(null),
-    capabilities: fallbackCapabilities,
-    featuredProjects: fallbackProjects.filter((project) => project.featured),
-    latestPosts: [...fallbackPosts].slice(0, 2),
-    featuredExperiments: fallbackExperiments.filter(
-      (experiment) => experiment.featured
+        return {
+          profile: mapProfile(result.profile, result.settings?.notificationEmail),
+          capabilities: result.capabilities as Capability[],
+          featuredProjects: result.featuredProjects as Project[],
+          latestPosts: result.latestPosts as Post[],
+          featuredExperiments: result.featuredExperiments as Experiment[],
+        };
+      },
+      {
+        profile: mapProfile(null),
+        capabilities: fallbackCapabilities,
+        featuredProjects: fallbackProjects.filter((project) => project.featured),
+        latestPosts: [...fallbackPosts].slice(0, 2),
+        featuredExperiments: fallbackExperiments.filter(
+          (experiment) => experiment.featured
+        ),
+      }
     ),
-  });
-});
+  ["site-home-page-data"],
+  {
+    revalidate: PUBLIC_SITE_REVALIDATE_SECONDS,
+    tags: ["site-content", "site-home", "site-profile", "site-projects", "site-posts", "site-experiments"],
+  }
+);
 
-export const getAboutPageData = cache(async (): Promise<AboutPageData> => {
-  return withFallback(async () => {
-    const result = await fetchQuery(api.content.getAboutData, {});
+const getAboutPageDataCached = unstable_cache(
+  async (): Promise<AboutPageData> =>
+    withFallback(
+      async () => {
+        const result = await fetchQuery(api.content.getAboutData, {});
 
-    return {
-      profile: mapProfile(result.profile, undefined),
-      capabilities: result.capabilities as Capability[],
-      experienceEntries: result.experienceEntries as ExperienceEntry[],
-    };
-  }, {
-    profile: mapProfile(null),
-    capabilities: fallbackCapabilities,
-    experienceEntries: fallbackExperienceEntries,
-  });
-});
+        return {
+          profile: mapProfile(result.profile, undefined),
+          capabilities: result.capabilities as Capability[],
+          experienceEntries: result.experienceEntries as ExperienceEntry[],
+        };
+      },
+      {
+        profile: mapProfile(null),
+        capabilities: fallbackCapabilities,
+        experienceEntries: fallbackExperienceEntries,
+      }
+    ),
+  ["site-about-page-data"],
+  {
+    revalidate: PUBLIC_SITE_REVALIDATE_SECONDS,
+    tags: ["site-content", "site-about", "site-profile", "site-capabilities", "site-experience"],
+  }
+);
 
-export const getSiteProfile = cache(async (): Promise<SiteProfile> => {
-  const data = await getHomePageData();
+const getPublishedProjectsCached = unstable_cache(
+  async (): Promise<Project[]> =>
+    withFallback(
+      async () => (await fetchQuery(api.content.getProjects, {})) as Project[],
+      fallbackProjects.filter((project) => project.published)
+    ),
+  ["site-published-projects"],
+  {
+    revalidate: PUBLIC_SITE_REVALIDATE_SECONDS,
+    tags: ["site-content", "site-projects"],
+  }
+);
+
+const getProjectBySlugCached = unstable_cache(
+  async (slug: string): Promise<Project | null> =>
+    withFallback(
+      async () =>
+        (await fetchQuery(api.content.getProjectBySlug, { slug })) as Project | null,
+      fallbackProjects.find((project) => project.slug === slug && project.published) ??
+        null
+    ),
+  ["site-project-by-slug"],
+  {
+    revalidate: PUBLIC_SITE_REVALIDATE_SECONDS,
+    tags: ["site-content", "site-projects"],
+  }
+);
+
+const getPublishedPostsCached = unstable_cache(
+  async (): Promise<Post[]> =>
+    withFallback(
+      async () => (await fetchQuery(api.content.getPosts, {})) as Post[],
+      [...fallbackPosts].filter((post) => post.published)
+    ),
+  ["site-published-posts"],
+  {
+    revalidate: PUBLIC_SITE_REVALIDATE_SECONDS,
+    tags: ["site-content", "site-posts"],
+  }
+);
+
+const getPostBySlugCached = unstable_cache(
+  async (slug: string): Promise<Post | null> =>
+    withFallback(
+      async () =>
+        (await fetchQuery(api.content.getPostBySlug, { slug })) as Post | null,
+      fallbackPosts.find((post) => post.slug === slug && post.published) ?? null
+    ),
+  ["site-post-by-slug"],
+  {
+    revalidate: PUBLIC_SITE_REVALIDATE_SECONDS,
+    tags: ["site-content", "site-posts"],
+  }
+);
+
+const getPublishedExperimentsCached = unstable_cache(
+  async (): Promise<Experiment[]> =>
+    withFallback(
+      async () => (await fetchQuery(api.content.getExperiments, {})) as Experiment[],
+      fallbackExperiments.filter((experiment) => experiment.published)
+    ),
+  ["site-published-experiments"],
+  {
+    revalidate: PUBLIC_SITE_REVALIDATE_SECONDS,
+    tags: ["site-content", "site-experiments"],
+  }
+);
+
+export async function getHomePageData() {
+  return getHomePageDataCached();
+}
+
+export async function getAboutPageData() {
+  return getAboutPageDataCached();
+}
+
+export async function getSiteProfile(): Promise<SiteProfile> {
+  const data = await getHomePageDataCached();
   return data.profile;
-});
+}
 
 export async function getProfile() {
   return getSiteProfile();
@@ -144,12 +240,9 @@ export async function getExperienceEntries() {
   return data.experienceEntries;
 }
 
-export const getPublishedProjects = cache(async (): Promise<Project[]> => {
-  return withFallback(
-    async () => (await fetchQuery(api.content.getProjects, {})) as Project[],
-    fallbackProjects.filter((project) => project.published)
-  );
-});
+export async function getPublishedProjects() {
+  return getPublishedProjectsCached();
+}
 
 export async function getFeaturedProjects() {
   const data = await getHomePageData();
@@ -157,30 +250,17 @@ export async function getFeaturedProjects() {
 }
 
 export async function getProjectBySlug(slug: string) {
-  return withFallback(
-    async () => (await fetchQuery(api.content.getProjectBySlug, { slug })) as Project | null,
-    fallbackProjects.find((project) => project.slug === slug && project.published) ??
-      null
-  );
+  return getProjectBySlugCached(slug);
 }
 
-export const getPublishedPosts = cache(async (): Promise<Post[]> => {
-  return withFallback(
-    async () => (await fetchQuery(api.content.getPosts, {})) as Post[],
-    [...fallbackPosts].filter((post) => post.published)
-  );
-});
+export async function getPublishedPosts() {
+  return getPublishedPostsCached();
+}
 
 export async function getPostBySlug(slug: string) {
-  return withFallback(
-    async () => (await fetchQuery(api.content.getPostBySlug, { slug })) as Post | null,
-    fallbackPosts.find((post) => post.slug === slug && post.published) ?? null
-  );
+  return getPostBySlugCached(slug);
 }
 
-export const getPublishedExperiments = cache(async (): Promise<Experiment[]> => {
-  return withFallback(
-    async () => (await fetchQuery(api.content.getExperiments, {})) as Experiment[],
-    fallbackExperiments.filter((experiment) => experiment.published)
-  );
-});
+export async function getPublishedExperiments() {
+  return getPublishedExperimentsCached();
+}

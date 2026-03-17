@@ -13,6 +13,8 @@ type WorkDetailPageProps = {
   params: Promise<{ slug: string }>;
 };
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const projects = await getPublishedProjects();
   return projects.map((project) => ({ slug: project.slug }));

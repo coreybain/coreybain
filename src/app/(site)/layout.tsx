@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { SiteShell } from "@/components/site/site-shell";
 
+export const dynamic = "force-static";
 export const revalidate = 3600;
 
 export default function PublicLayout({ children }: { children: ReactNode }) {
