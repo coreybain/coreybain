@@ -17,7 +17,6 @@ type RateLimitResult = {
 };
 
 declare global {
-  // eslint-disable-next-line no-var
   var __coreybainesRateLimitStore__: Map<string, BucketRecord> | undefined;
 }
 

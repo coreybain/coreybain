@@ -4,7 +4,7 @@ import { FlaskConical, Menu, X } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type NavItem = {
   href: string;
@@ -28,11 +28,8 @@ function isActivePath(pathname: string, href: string) {
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
+  const [mobileMenuPathname, setMobileMenuPathname] = useState<string | null>(null);
+  const isMobileMenuOpen = mobileMenuPathname === pathname;
 
   return (
     <header className="sticky top-0 z-40 border-b border-[color:var(--color-border)]/80 bg-[color:var(--color-surface)]/80 backdrop-blur-lg">
@@ -79,7 +76,11 @@ export function SiteHeader() {
           aria-expanded={isMobileMenuOpen}
           aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
           className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface-alt)] text-[color:var(--color-foreground)] transition-colors hover:border-[color:var(--color-accent)] hover:text-[color:var(--color-accent)] md:hidden"
-          onClick={() => setIsMobileMenuOpen((open) => !open)}
+          onClick={() =>
+            setMobileMenuPathname((currentPathname) =>
+              currentPathname === pathname ? null : pathname,
+            )
+          }
         >
           {isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
         </button>
