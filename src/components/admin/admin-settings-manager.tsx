@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useConvexAuth, useMutation } from "convex/react";
 import { api } from "@convex/_generated/api";
 import type { Doc, Id } from "@convex/_generated/dataModel";
+import { refreshPublicSiteContent } from "@/lib/site/revalidate-client";
 
 type ProfileRecord = Doc<"profile"> | null;
 type SiteSettingsRecord = Doc<"siteSettings"> | null;
@@ -261,7 +262,8 @@ export function AdminSettingsManager({
           summary: summaryItems,
           socialLinks: toSocialLinks(socialLinks),
         });
-        setNotice("Profile saved.");
+        const refreshed = await refreshPublicSiteContent();
+        setNotice(refreshed.ok ? "Profile saved." : refreshed.message);
         router.refresh();
       } catch (error) {
         setNotice(error instanceof Error ? error.message : "Could not save profile.");
@@ -285,7 +287,8 @@ export function AdminSettingsManager({
           featuredExperimentSlugs: csvToArray(featuredExperiments),
           notificationEmail: notificationEmail.trim() || undefined,
         });
-        setNotice("Site settings saved.");
+        const refreshed = await refreshPublicSiteContent();
+        setNotice(refreshed.ok ? "Site settings saved." : refreshed.message);
         router.refresh();
       } catch (error) {
         setNotice(
@@ -378,7 +381,8 @@ export function AdminSettingsManager({
             entry.key === draft.key ? { ...entry, id: String(id) } : entry
           )
         );
-        setNotice("Capability saved.");
+        const refreshed = await refreshPublicSiteContent();
+        setNotice(refreshed.ok ? "Capability saved." : refreshed.message);
         router.refresh();
       } catch (error) {
         setNotice(error instanceof Error ? error.message : "Could not save capability.");
@@ -400,7 +404,8 @@ export function AdminSettingsManager({
           await deleteCapability({ id: draft.id as Id<"capabilities"> });
         }
         setCapabilities((current) => current.filter((entry) => entry.key !== draft.key));
-        setNotice("Capability removed.");
+        const refreshed = await refreshPublicSiteContent();
+        setNotice(refreshed.ok ? "Capability removed." : refreshed.message);
         router.refresh();
       } catch (error) {
         setNotice(error instanceof Error ? error.message : "Could not remove capability.");
@@ -437,7 +442,8 @@ export function AdminSettingsManager({
             entry.key === draft.key ? { ...entry, id: String(id) } : entry
           )
         );
-        setNotice("Experience entry saved.");
+        const refreshed = await refreshPublicSiteContent();
+        setNotice(refreshed.ok ? "Experience entry saved." : refreshed.message);
         router.refresh();
       } catch (error) {
         setNotice(
@@ -465,7 +471,8 @@ export function AdminSettingsManager({
         setExperienceEntries((current) =>
           current.filter((entry) => entry.key !== draft.key)
         );
-        setNotice("Experience entry removed.");
+        const refreshed = await refreshPublicSiteContent();
+        setNotice(refreshed.ok ? "Experience entry removed." : refreshed.message);
         router.refresh();
       } catch (error) {
         setNotice(
@@ -509,7 +516,8 @@ export function AdminSettingsManager({
             entry.key === draft.key ? { ...entry, id: String(id) } : entry
           )
         );
-        setNotice("Experiment saved.");
+        const refreshed = await refreshPublicSiteContent();
+        setNotice(refreshed.ok ? "Experiment saved." : refreshed.message);
         router.refresh();
       } catch (error) {
         setNotice(error instanceof Error ? error.message : "Could not save experiment.");
@@ -531,7 +539,8 @@ export function AdminSettingsManager({
           await deleteExperiment({ id: draft.id as Id<"experiments"> });
         }
         setExperiments((current) => current.filter((entry) => entry.key !== draft.key));
-        setNotice("Experiment removed.");
+        const refreshed = await refreshPublicSiteContent();
+        setNotice(refreshed.ok ? "Experiment removed." : refreshed.message);
         router.refresh();
       } catch (error) {
         setNotice(error instanceof Error ? error.message : "Could not remove experiment.");

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useConvexAuth, useMutation } from "convex/react";
 import { api } from "@convex/_generated/api";
 import type { Doc, Id } from "@convex/_generated/dataModel";
+import { refreshPublicSiteContent } from "@/lib/site/revalidate-client";
 
 type PostRecord = Doc<"posts">;
 
@@ -181,7 +182,8 @@ export function AdminPostsManager({ initialPosts }: Props) {
           setDraft(toDraft(nextRecord));
         }
 
-        setNotice("Post saved.");
+        const refreshed = await refreshPublicSiteContent();
+        setNotice(refreshed.ok ? "Post saved." : refreshed.message);
         router.refresh();
       } catch (error) {
         setNotice(error instanceof Error ? error.message : "Could not save post.");
@@ -221,6 +223,8 @@ export function AdminPostsManager({ initialPosts }: Props) {
         if (draft.id === String(post._id)) {
           setDraft((current) => ({ ...current, published: nextPublished }));
         }
+        const refreshed = await refreshPublicSiteContent();
+        setNotice(refreshed.ok ? "Post updated." : refreshed.message);
         router.refresh();
       } catch (error) {
         setNotice(error instanceof Error ? error.message : "Could not update post.");
@@ -246,7 +250,8 @@ export function AdminPostsManager({ initialPosts }: Props) {
         const id = draft.id as Id<"posts">;
         await deletePost({ id });
         removeRow(id);
-        setNotice("Post deleted.");
+        const refreshed = await refreshPublicSiteContent();
+        setNotice(refreshed.ok ? "Post deleted." : refreshed.message);
         router.refresh();
       } catch (error) {
         setNotice(error instanceof Error ? error.message : "Could not delete post.");

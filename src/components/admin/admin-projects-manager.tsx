@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useConvexAuth, useMutation } from "convex/react";
 import { api } from "@convex/_generated/api";
 import type { Doc, Id } from "@convex/_generated/dataModel";
+import { refreshPublicSiteContent } from "@/lib/site/revalidate-client";
 
 type ProjectRecord = Doc<"projects">;
 
@@ -303,7 +304,8 @@ export function AdminProjectsManager({ initialProjects }: Props) {
           setDraft(toDraft(nextRecord));
         }
 
-        setNotice("Project saved.");
+        const refreshed = await refreshPublicSiteContent();
+        setNotice(refreshed.ok ? "Project saved." : refreshed.message);
         router.refresh();
       } catch (error) {
         setNotice(error instanceof Error ? error.message : "Could not save project.");
@@ -358,6 +360,8 @@ export function AdminProjectsManager({ initialProjects }: Props) {
             sortOrder: merged.sortOrder,
           }));
         }
+        const refreshed = await refreshPublicSiteContent();
+        setNotice(refreshed.ok ? "Project updated." : refreshed.message);
         router.refresh();
       } catch (error) {
         setNotice(
@@ -385,7 +389,8 @@ export function AdminProjectsManager({ initialProjects }: Props) {
         const id = draft.id as Id<"projects">;
         await deleteProject({ id });
         removeRow(id);
-        setNotice("Project deleted.");
+        const refreshed = await refreshPublicSiteContent();
+        setNotice(refreshed.ok ? "Project deleted." : refreshed.message);
         router.refresh();
       } catch (error) {
         setNotice(error instanceof Error ? error.message : "Could not delete project.");

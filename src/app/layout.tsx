@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Sora } from "next/font/google";
-import { AppProviders } from "@/components/app-providers";
 import { GridCursorGlow } from "@/components/grid-cursor-glow";
-import { authServer } from "@/lib/auth-server";
 import { buildMetadata } from "./seo";
 import "./globals.css";
 
@@ -24,18 +22,16 @@ export const metadata: Metadata = buildMetadata({
   path: "/",
 });
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const initialToken = await authServer.getToken();
-
   return (
     <html lang="en">
       <body className={`${sora.variable} ${plexMono.variable} antialiased`}>
         <GridCursorGlow />
-        <AppProviders initialToken={initialToken}>{children}</AppProviders>
+        {children}
       </body>
     </html>
   );
