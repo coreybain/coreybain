@@ -25,7 +25,7 @@ export function AskPromptButtons({ prompts }: AskPromptButtonsProps) {
           <button
             type="button"
             onClick={() => handleClick(prompt)}
-            className="w-full cursor-pointer rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-background)] px-4 py-3 text-left transition-all hover:-translate-y-0.5 hover:border-[color:var(--color-accent)] hover:text-[color:var(--color-accent)] focus-visible:border-[color:var(--color-accent)] focus-visible:text-[color:var(--color-accent)] focus-visible:outline-none"
+            className="w-full cursor-pointer rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-background)] px-4 py-3 text-left transition-colors hover:border-[color:var(--color-accent)] hover:text-[color:var(--color-accent)] focus-visible:border-[color:var(--color-accent)] focus-visible:text-[color:var(--color-accent)] focus-visible:outline-none"
           >
             {prompt}
           </button>
