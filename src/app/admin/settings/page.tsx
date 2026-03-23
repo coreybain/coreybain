@@ -12,7 +12,7 @@ export default async function AdminSettingsPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        description="Edit profile copy, site curation, capabilities, experience, and experiments."
+        description="Edit profile copy, site curation, and capabilities."
         title="Settings"
       />
 
@@ -20,8 +20,6 @@ export default async function AdminSettingsPage() {
         initialProfile={adminSettings?.profile ?? null}
         initialSiteSettings={adminSettings?.siteSettings ?? null}
         initialCapabilities={adminSettings?.capabilities ?? []}
-        initialExperienceEntries={adminSettings?.experienceEntries ?? []}
-        initialExperiments={adminSettings?.experiments ?? []}
       />
     </div>
   );

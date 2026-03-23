@@ -175,12 +175,13 @@ export function AuthPanel() {
         </p>
       </header>
 
-      <form onSubmit={onSubmit} className="space-y-4">
+      <form onSubmit={onSubmit} aria-busy={isSubmitting} className="space-y-4">
         <label className="block space-y-2">
           <span className="text-sm">Email</span>
           <input
             type="email"
             required
+            disabled={isSubmitting}
             value={email}
             onChange={(event) => setEmail(event.currentTarget.value)}
             className="w-full rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-background)] px-4 py-2.5 text-sm outline-none transition-colors focus:border-[color:var(--color-accent)]"
@@ -195,6 +196,7 @@ export function AuthPanel() {
             type="password"
             required
             minLength={8}
+            disabled={isSubmitting}
             value={password}
             onChange={(event) => setPassword(event.currentTarget.value)}
             className="w-full rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-background)] px-4 py-2.5 text-sm outline-none transition-colors focus:border-[color:var(--color-accent)]"
@@ -206,6 +208,7 @@ export function AuthPanel() {
         <label className="inline-flex items-center gap-2 text-sm text-[color:var(--color-muted-foreground)]">
           <input
             type="checkbox"
+            disabled={isSubmitting}
             checked={rememberMe}
             onChange={(event) => setRememberMe(event.currentTarget.checked)}
             className="h-4 w-4 rounded border-[color:var(--color-border)] bg-[color:var(--color-background)]"
@@ -216,9 +219,20 @@ export function AuthPanel() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex w-full items-center justify-center rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-alt)] px-4 py-2.5 text-sm font-medium transition-colors hover:border-[color:var(--color-accent)] hover:text-[color:var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-60"
+          aria-live="polite"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-alt)] px-4 py-2.5 text-sm font-medium transition-colors hover:border-[color:var(--color-accent)] hover:text-[color:var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isSubmitting ? "Working..." : "Sign in"}
+          {isSubmitting ? (
+            <>
+              <span
+                aria-hidden="true"
+                className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+              />
+              Signing in...
+            </>
+          ) : (
+            "Sign in"
+          )}
         </button>
       </form>
 

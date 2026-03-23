@@ -106,8 +106,8 @@ export default async function HomePage() {
       <section className="space-y-6">
         <SectionHeading
           eyebrow="Selected Work"
-          title="Case studies and shipped products."
-          description="The most relevant examples of how I approach architecture, delivery, and product outcomes."
+          title="Case studies, shipped products, and practical experiments."
+          description="A curated mix of work that shows how I approach architecture, delivery, and product outcomes."
         />
         <div>
           {featuredProjects.map((project) => (

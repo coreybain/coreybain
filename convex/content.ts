@@ -158,16 +158,36 @@ function resolveProjectCompany(project: {
   );
 }
 
-function normalizeProject<T extends { slug: string; company?: string | undefined }>(
-  project: T
-): T & { company: string } {
+type ProjectLocation = "homepage" | "work" | "experiments";
+
+type NormalizedProject = Omit<Doc<"projects">, "company" | "type" | "visibleOn"> & {
+  company: string;
+  type: "project" | "experiment";
+  visibleOn: ProjectLocation[];
+};
+
+function normalizeProject(project: Doc<"projects">): NormalizedProject {
   return {
     ...project,
+    type: project.type ?? "project",
+    visibleOn:
+      project.visibleOn && project.visibleOn.length > 0
+        ? project.visibleOn
+        : ["work"],
     company: resolveProjectCompany(project),
   };
 }
 
-async function fetchPublishedProjects(ctx: Parameters<typeof query>[0] extends never ? never : any) {
+function isProjectVisibleOn(
+  project: NormalizedProject,
+  location: ProjectLocation
+) {
+  return project.visibleOn.includes(location);
+}
+
+async function fetchPublishedPortfolioItems(
+  ctx: Parameters<typeof query>[0] extends never ? never : any
+) {
   const projects = await ctx.db
     .query("projects")
     .withIndex("by_published", (queryBuilder: any) =>
@@ -178,6 +198,13 @@ async function fetchPublishedProjects(ctx: Parameters<typeof query>[0] extends n
   return sortBySortOrder(projects as Doc<"projects">[]).map((project) =>
     normalizeProject(project)
   );
+}
+
+async function fetchPublishedProjects(
+  ctx: Parameters<typeof query>[0] extends never ? never : any
+) {
+  const projects = await fetchPublishedPortfolioItems(ctx);
+  return projects.filter((project) => isProjectVisibleOn(project, "work"));
 }
 
 async function fetchPublishedPosts(ctx: Parameters<typeof query>[0] extends never ? never : any) {
@@ -194,14 +221,40 @@ async function fetchPublishedPosts(ctx: Parameters<typeof query>[0] extends neve
 async function fetchPublishedExperiments(
   ctx: Parameters<typeof query>[0] extends never ? never : any
 ) {
-  const experiments = await ctx.db
-    .query("experiments")
-    .withIndex("by_published", (queryBuilder: any) =>
-      queryBuilder.eq("published", true)
-    )
-    .collect();
+  const [portfolioItems, legacyExperiments] = await Promise.all([
+    fetchPublishedPortfolioItems(ctx),
+    ctx.db
+      .query("experiments")
+      .withIndex("by_published", (queryBuilder: any) =>
+        queryBuilder.eq("published", true)
+      )
+      .collect(),
+  ]);
 
-  return sortBySortOrder(experiments) as Doc<"experiments">[];
+  const typedExperiments = portfolioItems
+    .filter((project) => isProjectVisibleOn(project, "experiments"))
+    .map((project) => ({
+      slug: project.slug,
+      title: project.title,
+      summary: project.summary,
+      body: project.body.join("\n\n"),
+      tags: project.stack,
+      links: {
+        live: project.links.live,
+        repo: project.links.repo,
+        post: project.links.post,
+      },
+      featured: project.visibleOn.includes("homepage"),
+      published: project.published,
+      sortOrder: project.sortOrder,
+    }));
+
+  const typedExperimentSlugs = new Set(typedExperiments.map((experiment) => experiment.slug));
+  const remainingLegacyExperiments = sortBySortOrder(
+    legacyExperiments as Doc<"experiments">[]
+  ).filter((experiment) => !typedExperimentSlugs.has(experiment.slug));
+
+  return [...typedExperiments, ...remainingLegacyExperiments];
 }
 
 async function fetchCapabilities(ctx: Parameters<typeof query>[0] extends never ? never : any) {
@@ -237,36 +290,35 @@ function selectBySlugList<T extends { slug: string }>(
   return items.slice(0, fallbackCount);
 }
 
-function selectFeaturedItems<T extends { slug: string; featured?: boolean }>(
-  items: T[],
-  slugs: string[] | undefined,
-  fallbackCount = 3
-) {
-  if (slugs && slugs.length > 0) {
-    const bySlug = new Map(items.map((item) => [item.slug, item]));
-    return slugs
-      .map((slug) => bySlug.get(slug))
-      .filter((item): item is T => Boolean(item));
+function selectVisibleItems<
+  T extends {
+    visibleOn?: ProjectLocation[];
+    sortOrder: number;
+  },
+>(items: T[], location: ProjectLocation, fallbackCount = 3) {
+  const visible = items.filter((item) => item.visibleOn?.includes(location));
+  if (visible.length > 0) {
+    return visible;
   }
 
-  const flagged = items.filter((item) => item.featured);
-  return (flagged.length > 0 ? flagged : items).slice(0, fallbackCount);
+  return items.slice(0, fallbackCount);
 }
 
-function projectToKnowledgeDocument(project: Doc<"projects">) {
+function projectToKnowledgeDocument(project: NormalizedProject) {
   return {
     sourceType: "project" as const,
     sourceSlug: project.slug,
     title: project.title,
-    url: `/work/${project.slug}`,
+    url: project.type === "experiment" ? "/experiments" : `/work/${project.slug}`,
     plainText: [
+      project.type,
       project.title,
       resolveProjectCompany(project),
       project.tagline,
       project.summary,
       project.body.join(" "),
-      project.role,
-      project.period,
+      project.role ?? "",
+      project.period ?? "",
       project.stack.join(" "),
       project.outcomes.join(" "),
       project.impactMetrics?.join(" ") ?? "",
@@ -275,6 +327,22 @@ function projectToKnowledgeDocument(project: Doc<"projects">) {
       project.audience ?? "",
       project.lessonsLearned?.join(" ") ?? "",
     ].join(" "),
+  };
+}
+
+function projectToAboutExperience(project: NormalizedProject) {
+  return {
+    company: resolveProjectCompany(project),
+    title: project.role?.trim() || project.title,
+    period: project.period?.trim() || "Selected work",
+    summary: project.summary,
+    highlights:
+      project.outcomes.length > 0
+        ? project.outcomes
+        : project.responsibilities?.length
+          ? project.responsibilities
+          : project.body.slice(0, 3),
+    sortOrder: project.sortOrder,
   };
 }
 
@@ -293,7 +361,7 @@ function postToKnowledgeDocument(post: Doc<"posts">) {
 function pageKnowledgeDocuments(args: {
   profile: Doc<"profile"> | undefined;
   capabilities: Doc<"capabilities">[];
-  experienceEntries: Doc<"experienceEntries">[];
+  experienceEntries: ReturnType<typeof projectToAboutExperience>[];
 }) {
   if (!args.profile) {
     return [];
@@ -325,7 +393,6 @@ function pageKnowledgeDocuments(args: {
               `${entry.title} at ${entry.company}`,
               entry.summary,
               entry.highlights.join(" "),
-              entry.skills.join(" "),
             ].join(" ")
           )
           .join(" "),
@@ -394,12 +461,12 @@ export const getSiteChrome = query({
 export const getHomeData = query({
   args: {},
   handler: async (ctx) => {
-    const [profile, settings, capabilities, projects, posts, experiments] =
+    const [profile, settings, capabilities, portfolioItems, posts, experiments] =
       await Promise.all([
         getSingleton(ctx, "profile"),
         getSingleton(ctx, "siteSettings"),
         fetchCapabilities(ctx),
-        fetchPublishedProjects(ctx),
+        fetchPublishedPortfolioItems(ctx),
         fetchPublishedPosts(ctx),
         fetchPublishedExperiments(ctx),
       ]);
@@ -407,13 +474,9 @@ export const getHomeData = query({
     return {
       profile,
       capabilities,
-      featuredProjects: selectFeaturedItems(
-        projects,
-        settings?.featuredProjectSlugs,
-        3
-      ),
+      featuredProjects: selectVisibleItems(portfolioItems, "homepage", 3),
       latestPosts: selectBySlugList(posts, settings?.featuredPostSlugs, 2),
-      featuredExperiments: selectFeaturedItems(
+      featuredExperiments: selectBySlugList(
         experiments,
         settings?.featuredExperimentSlugs,
         2
@@ -426,13 +489,19 @@ export const getHomeData = query({
 export const getAboutData = query({
   args: {},
   handler: async (ctx) => {
-    const [profile, capabilities, experienceEntries] = await Promise.all([
+    const [profile, capabilities, projects] = await Promise.all([
       getSingleton(ctx, "profile"),
       fetchCapabilities(ctx),
-      fetchExperienceEntries(ctx),
+      fetchPublishedPortfolioItems(ctx),
     ]);
 
-    return { profile, capabilities, experienceEntries };
+    return {
+      profile,
+      capabilities,
+      experienceEntries: projects
+        .filter((project) => project.type === "project")
+        .map(projectToAboutExperience),
+    };
   },
 });
 
@@ -455,7 +524,15 @@ export const getProjectBySlug = query({
       return null;
     }
 
-    return normalizeProject(project);
+    const normalizedProject = normalizeProject(project);
+    if (
+      normalizedProject.type !== "project" ||
+      !isProjectVisibleOn(normalizedProject, "work")
+    ) {
+      return null;
+    }
+
+    return normalizedProject;
   },
 });
 
@@ -494,21 +571,17 @@ export const getSettingsAdmin = query({
   handler: async (ctx) => {
     await requireAdmin(ctx);
 
-    const [profile, siteSettings, capabilities, experienceEntries, experiments] =
+    const [profile, siteSettings, capabilities] =
       await Promise.all([
         getSingleton(ctx, "profile"),
         getSingleton(ctx, "siteSettings"),
         fetchCapabilities(ctx),
-        fetchExperienceEntries(ctx),
-        ctx.db.query("experiments").withIndex("by_sort_order").collect(),
       ]);
 
     return {
       profile,
       siteSettings,
       capabilities,
-      experienceEntries,
-      experiments,
     };
   },
 });
@@ -706,14 +779,24 @@ export const deleteExperienceEntry = mutation({
 const projectArgs = {
   id: v.optional(v.id("projects")),
   slug: v.string(),
+  type: v.optional(v.union(v.literal("project"), v.literal("experiment"))),
+  visibleOn: v.optional(
+    v.array(
+      v.union(
+        v.literal("homepage"),
+        v.literal("work"),
+        v.literal("experiments")
+      )
+    )
+  ),
   title: v.string(),
-  company: v.string(),
+  company: v.optional(v.string()),
   tagline: v.string(),
   summary: v.string(),
   body: v.array(v.string()),
-  role: v.string(),
-  period: v.string(),
-  status: v.string(),
+  role: v.optional(v.string()),
+  period: v.optional(v.string()),
+  status: v.optional(v.string()),
   stack: v.array(v.string()),
   outcomes: v.array(v.string()),
   impactMetrics: v.optional(v.array(v.string())),
@@ -735,6 +818,7 @@ const projectArgs = {
     repo: v.optional(v.string()),
     store: v.optional(v.string()),
     video: v.optional(v.string()),
+    post: v.optional(v.string()),
   }),
   featured: v.boolean(),
   published: v.boolean(),
@@ -745,7 +829,13 @@ export const saveProject = mutation({
   args: projectArgs,
   handler: async (ctx, args) => {
     await requireAdmin(ctx);
-    const { id, ...payload } = args;
+    const { id, ...rest } = args;
+    const payload = {
+      ...rest,
+      type: rest.type ?? "project",
+      visibleOn:
+        rest.visibleOn && rest.visibleOn.length > 0 ? rest.visibleOn : ["work"],
+    };
 
     if (id) {
       await ctx.db.patch(id, payload);
@@ -909,18 +999,21 @@ export const getMessageByIdAdmin = query({
 export const knowledgeSnapshot = internalQuery({
   args: {},
   handler: async (ctx) => {
-    const [profile, capabilities, experienceEntries, projects, posts] =
+    const [profile, capabilities, portfolioItems, posts] =
       await Promise.all([
         getSingleton(ctx, "profile"),
         fetchCapabilities(ctx),
-        fetchExperienceEntries(ctx),
-        fetchPublishedProjects(ctx),
+        fetchPublishedPortfolioItems(ctx),
         fetchPublishedPosts(ctx),
       ]);
 
+    const experienceEntries = portfolioItems
+      .filter((project) => project.type === "project")
+      .map(projectToAboutExperience);
+
     return {
       documents: [
-        ...projects.map(projectToKnowledgeDocument),
+        ...portfolioItems.map(projectToKnowledgeDocument),
         ...posts.map(postToKnowledgeDocument),
         ...pageKnowledgeDocuments({ profile, capabilities, experienceEntries }),
       ],

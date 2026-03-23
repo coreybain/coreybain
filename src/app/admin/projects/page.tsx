@@ -12,7 +12,7 @@ export default async function AdminProjectsPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        description="Create, edit, publish, feature, and order project case studies."
+        description="Create, edit, publish, and place project or experiment entries across the site."
         title="Projects"
       />
 

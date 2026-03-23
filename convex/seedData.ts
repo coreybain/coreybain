@@ -1,3 +1,7 @@
+import type { Doc } from "./_generated/dataModel";
+
+type ProjectSeed = Omit<Doc<"projects">, "_id" | "_creationTime">;
+
 export const seedProfile = {
   headline: "Principal / Lead Full-Stack Engineer",
   subheadline:
@@ -92,9 +96,11 @@ export const seedExperienceEntries = [
   },
 ];
 
-export const seedProjects = [
+export const seedProjects: ProjectSeed[] = [
   {
     slug: "quotecloud",
+    type: "project",
+    visibleOn: ["homepage", "work"],
     title: "QuoteCloud",
     company: "Corporate Interactive",
     tagline: "Sales quote and proposal workflows built for speed.",
@@ -138,6 +144,8 @@ export const seedProjects = [
   },
   {
     slug: "traveldocs",
+    type: "project",
+    visibleOn: ["homepage", "work"],
     title: "TravelDocs",
     company: "Corporate Interactive",
     tagline: "Smart itinerary and document management for travel.",
@@ -165,6 +173,8 @@ export const seedProjects = [
   },
   {
     slug: "npx-card",
+    type: "project",
+    visibleOn: ["work"],
     title: "npx coreybaines",
     company: "Independent / Product Builder",
     tagline: "A lightweight CLI profile card for quick intros.",

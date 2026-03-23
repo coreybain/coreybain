@@ -3,6 +3,7 @@ export type ProjectLinkSet = {
   repo?: string;
   store?: string;
   video?: string;
+  post?: string;
 };
 
 export type ProjectMedia = {
@@ -11,16 +12,22 @@ export type ProjectMedia = {
   alt: string;
 };
 
+export type ProjectType = "project" | "experiment";
+
+export type ProjectVisibility = "homepage" | "work" | "experiments";
+
 export type Project = {
   slug: string;
+  type: ProjectType;
+  visibleOn: ProjectVisibility[];
   title: string;
-  company: string;
+  company?: string;
   tagline: string;
   summary: string;
   body: string[];
-  role: string;
-  period: string;
-  status: "active" | "maintained" | "archived";
+  role?: string;
+  period?: string;
+  status?: "active" | "maintained" | "archived";
   stack: string[];
   outcomes: string[];
   impactMetrics?: string[];
@@ -46,14 +53,12 @@ export type Post = {
   published: boolean;
 };
 
-export type ExperienceEntry = {
+export type AboutExperienceEntry = {
   company: string;
   title: string;
-  startDate: string;
-  endDate?: string;
+  period: string;
   summary: string;
   highlights: string[];
-  skills: string[];
   sortOrder: number;
 };
 

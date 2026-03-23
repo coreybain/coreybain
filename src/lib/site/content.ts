@@ -1,6 +1,6 @@
 import type {
+  AboutExperienceEntry,
   Capability,
-  ExperienceEntry,
   Experiment,
   Post,
   Project,
@@ -64,11 +64,11 @@ export const capabilities: Capability[] = [
   },
 ];
 
-export const experienceEntries: ExperienceEntry[] = [
+export const aboutExperienceEntries: AboutExperienceEntry[] = [
   {
     company: "Corporate Interactive",
     title: "Principal / Lead Engineer",
-    startDate: "2017-01",
+    period: "2017 - Present",
     summary:
       "Led full-stack delivery across product initiatives spanning web platforms, backend systems, and customer-facing workflows.",
     highlights: [
@@ -76,13 +76,12 @@ export const experienceEntries: ExperienceEntry[] = [
       "Mentored engineers and supported cross-team execution",
       "Improved release confidence through tighter engineering practices",
     ],
-    skills: ["Next.js", "React", "Java", "Node.js", "AWS", "CI/CD"],
     sortOrder: 1,
   },
   {
     company: "Independent / Product Builder",
     title: "Builder",
-    startDate: "2021-01",
+    period: "2021 - Present",
     summary:
       "Built and shipped product ideas, technical experiments, and developer tooling.",
     highlights: [
@@ -90,7 +89,6 @@ export const experienceEntries: ExperienceEntry[] = [
       "Explored practical AI-assisted workflows for product teams",
       "Maintained public writing and open-source style artifacts",
     ],
-    skills: ["TypeScript", "Swift", "Product Strategy", "UX"],
     sortOrder: 2,
   },
 ];
@@ -98,6 +96,8 @@ export const experienceEntries: ExperienceEntry[] = [
 export const projects: Project[] = [
   {
     slug: "quotecloud",
+    type: "project",
+    visibleOn: ["homepage", "work"],
     title: "QuoteCloud",
     company: "Corporate Interactive",
     tagline: "Sales quote and proposal workflows built for speed.",
@@ -141,6 +141,8 @@ export const projects: Project[] = [
   },
   {
     slug: "traveldocs",
+    type: "project",
+    visibleOn: ["homepage", "work"],
     title: "TravelDocs",
     company: "Corporate Interactive",
     tagline: "Smart itinerary and document management for travel.",
@@ -168,6 +170,8 @@ export const projects: Project[] = [
   },
   {
     slug: "npx-card",
+    type: "project",
+    visibleOn: ["work"],
     title: "npx coreybaines",
     company: "Independent / Product Builder",
     tagline: "A lightweight CLI profile card for quick intros.",
@@ -252,12 +256,18 @@ export const experiments: Experiment[] = [
 
 export function getPublishedProjects() {
   return projects
-    .filter((project) => project.published)
+    .filter((project) => project.published && project.visibleOn.includes("work"))
     .sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
 export function getFeaturedProjects() {
-  return getPublishedProjects().filter((project) => project.featured);
+  return projects
+    .filter(
+      (project) =>
+        project.published &&
+        project.visibleOn.includes("homepage")
+    )
+    .sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
 export function getProjectBySlug(slug: string) {

@@ -36,14 +36,24 @@ export default defineSchema({
     .index("by_sort_order", ["sortOrder"]),
   projects: defineTable({
     slug: v.string(),
+    type: v.optional(v.union(v.literal("project"), v.literal("experiment"))),
+    visibleOn: v.optional(
+      v.array(
+        v.union(
+          v.literal("homepage"),
+          v.literal("work"),
+          v.literal("experiments")
+        )
+      )
+    ),
     title: v.string(),
     company: v.optional(v.string()),
     tagline: v.string(),
     summary: v.string(),
     body: v.array(v.string()),
-    role: v.string(),
-    period: v.string(),
-    status: v.string(),
+    role: v.optional(v.string()),
+    period: v.optional(v.string()),
+    status: v.optional(v.string()),
     stack: v.array(v.string()),
     outcomes: v.array(v.string()),
     impactMetrics: v.optional(v.array(v.string())),
@@ -65,6 +75,7 @@ export default defineSchema({
       repo: v.optional(v.string()),
       store: v.optional(v.string()),
       video: v.optional(v.string()),
+      post: v.optional(v.string()),
     }),
     featured: v.boolean(),
     published: v.boolean(),

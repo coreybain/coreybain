@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "react-grab-codex && next dev --turbopack",
+    "dev": "bunx @react-grab/codex@latest && next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint .",
-    "seed:admin": "node --env-file=.env --env-file=.env.local scripts/seed-admin-user.mjs",
-    "set:admin-password": "node --env-file=.env --env-file=.env.local scripts/change-admin-password.mjs"
+    "seed:admin": "node --env-file=.env.local scripts/seed-admin-user.mjs",
+    "set:admin-password": "node --env-file=.env.local scripts/change-admin-password.mjs"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.58",

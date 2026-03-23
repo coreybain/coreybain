@@ -25,9 +25,9 @@ export default async function AdminDashboardPage() {
 
   const dashboardStats = [
     {
-      label: "Published projects",
+      label: "Published entries",
       value: String(projects.filter((project) => project.published).length),
-      hint: "Projects loaded from `api.content.listProjectsAdmin`.",
+      hint: "Portfolio entries loaded from `api.content.listProjectsAdmin`.",
     },
     {
       label: "Published posts",

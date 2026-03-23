@@ -4,16 +4,16 @@ import { fetchQuery } from "convex/nextjs";
 import { api } from "@convex/_generated/api";
 import { unstable_cache } from "next/cache";
 import {
+  aboutExperienceEntries as fallbackAboutExperienceEntries,
   capabilities as fallbackCapabilities,
-  experienceEntries as fallbackExperienceEntries,
   experiments as fallbackExperiments,
   posts as fallbackPosts,
   profile as fallbackProfile,
   projects as fallbackProjects,
 } from "@/lib/site/content";
 import type {
+  AboutExperienceEntry,
   Capability,
-  ExperienceEntry,
   Experiment,
   Post,
   Project,
@@ -31,7 +31,7 @@ type HomePageData = {
 type AboutPageData = {
   profile: SiteProfile;
   capabilities: Capability[];
-  experienceEntries: ExperienceEntry[];
+  experienceEntries: AboutExperienceEntry[];
 };
 
 const PUBLIC_SITE_REVALIDATE_SECONDS = 3600;
@@ -106,7 +106,9 @@ const getHomePageDataCached = unstable_cache(
       {
         profile: mapProfile(null),
         capabilities: fallbackCapabilities,
-        featuredProjects: fallbackProjects.filter((project) => project.featured),
+        featuredProjects: fallbackProjects.filter((project) =>
+          project.visibleOn.includes("homepage")
+        ),
         latestPosts: [...fallbackPosts].slice(0, 2),
         featuredExperiments: fallbackExperiments.filter(
           (experiment) => experiment.featured
@@ -129,13 +131,13 @@ const getAboutPageDataCached = unstable_cache(
         return {
           profile: mapProfile(result.profile, undefined),
           capabilities: result.capabilities as Capability[],
-          experienceEntries: result.experienceEntries as ExperienceEntry[],
+          experienceEntries: result.experienceEntries as AboutExperienceEntry[],
         };
       },
       {
         profile: mapProfile(null),
         capabilities: fallbackCapabilities,
-        experienceEntries: fallbackExperienceEntries,
+        experienceEntries: fallbackAboutExperienceEntries,
       }
     ),
   ["site-about-page-data"],
@@ -163,8 +165,13 @@ const getProjectBySlugCached = unstable_cache(
     withFallback(
       async () =>
         (await fetchQuery(api.content.getProjectBySlug, { slug })) as Project | null,
-      fallbackProjects.find((project) => project.slug === slug && project.published) ??
-        null
+      fallbackProjects.find(
+        (project) =>
+          project.slug === slug &&
+          project.published &&
+          project.type === "project" &&
+          project.visibleOn.includes("work")
+      ) ?? null
     ),
   ["site-project-by-slug"],
   {

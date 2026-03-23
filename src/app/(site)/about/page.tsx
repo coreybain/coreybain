@@ -52,11 +52,11 @@ export default async function AboutPage() {
         <div className="space-y-6">
           {orderedExperience.map((entry) => (
             <article
-              key={`${entry.company}-${entry.startDate}`}
+              key={`${entry.company}-${entry.period}`}
               className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-6"
             >
               <p className="text-xs tracking-[0.08em] text-[color:var(--color-muted-foreground)] uppercase">
-                {entry.startDate} - {entry.endDate ?? "Present"}
+                {entry.period}
               </p>
               <h2 className="mt-2 text-xl font-medium">
                 {entry.title} / {entry.company}
