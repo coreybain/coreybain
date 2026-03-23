@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Sora } from "next/font/google";
 import { GridCursorGlow } from "@/components/grid-cursor-glow";
+import { ReactGrabDev } from "@/components/react-grab-dev";
 import { buildMetadata } from "./seo";
 import "./globals.css";
 
@@ -30,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sora.variable} ${plexMono.variable} antialiased`}>
+        {process.env.NODE_ENV === "development" && <ReactGrabDev />}
         <GridCursorGlow />
         {children}
       </body>

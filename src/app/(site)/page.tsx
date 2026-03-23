@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AskPromptButtons } from "@/components/site/ask-prompt-buttons";
 import { PostCard } from "@/components/site/post-card";
 import { PostsPlaceholder } from "@/components/site/posts-placeholder";
 import { ProjectCard } from "@/components/site/project-card";
@@ -7,6 +8,7 @@ import { SectionHeading } from "@/components/site/section-heading";
 import { StructuredData } from "@/components/site/structured-data";
 import { TerminalCard } from "@/components/site/terminal-card";
 import { buildMetadata } from "@/app/seo";
+import { askCoreyPrompts } from "@/lib/site/ask-prompts";
 import { getHomePageData } from "@/lib/site/public-data";
 import { toAbsoluteUrl } from "@/lib/site-config";
 
@@ -18,12 +20,29 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function HomePage() {
-  const {
-    featuredProjects,
-    latestPosts,
-    capabilities,
-    profile,
-  } = await getHomePageData();
+  const { featuredProjects, latestPosts, profile } = await getHomePageData();
+  const capabilityCards = [
+    {
+      title: "System Architecture & Scale",
+      summary:
+        "Design distributed systems, multi-tenant SaaS platforms, and event-driven architectures.",
+    },
+    {
+      title: "AI-Native Product Development",
+      summary:
+        "Integrate LLMs into real workflows (not demos): automation, agents, retrieval, copilots.",
+    },
+    {
+      title: "Real-Time Systems",
+      summary:
+        "Build low-latency systems (auctions, tracking, live updates, streaming).",
+    },
+    {
+      title: "End-to-End Ownership",
+      summary:
+        "From product ideation \u2192 architecture \u2192 delivery \u2192 scaling \u2192 optimisation.",
+    },
+  ];
   const personJsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -42,7 +61,7 @@ export default async function HomePage() {
         <p className="font-mono text-xs tracking-[0.14em] text-[color:var(--color-muted-foreground)] uppercase">
           {profile.headline}
         </p>
-        <h1 className="max-w-4xl text-balance text-4xl font-semibold tracking-tight sm:text-6xl">
+        <h1 className="max-w-4xl text-balance text-4xl font-semibold tracking-tight sm:text-[38px]">
           {profile.subheadline}
         </h1>
         <p className="max-w-2xl text-pretty text-lg text-[color:var(--color-muted-foreground)]">
@@ -71,9 +90,9 @@ export default async function HomePage() {
       </section>
 
       <section className="grid gap-3 sm:grid-cols-2">
-        {capabilities.map((capability) => (
+        {capabilityCards.map((capability) => (
           <article
-            key={capability.slug}
+            key={capability.title}
             className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-5"
           >
             <h2 className="text-lg font-medium">{capability.title}</h2>
@@ -104,17 +123,7 @@ export default async function HomePage() {
           description="Ask about architecture, leadership, AI integration, or project fit. Responses are grounded in published content."
         />
         <div className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-6">
-          <ul className="grid gap-3 text-sm">
-            <li className="rounded-xl border border-[color:var(--color-border)] px-4 py-3">
-              Which projects best match a SaaS rebuild?
-            </li>
-            <li className="rounded-xl border border-[color:var(--color-border)] px-4 py-3">
-              What is Corey&apos;s leadership and delivery style?
-            </li>
-            <li className="rounded-xl border border-[color:var(--color-border)] px-4 py-3">
-              How does Corey approach AI features in production?
-            </li>
-          </ul>
+          <AskPromptButtons prompts={askCoreyPrompts} />
           <Link
             href="/ask"
             className="mt-5 inline-block text-sm font-medium text-[color:var(--color-accent)]"

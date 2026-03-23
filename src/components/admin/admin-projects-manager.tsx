@@ -537,18 +537,6 @@ export function AdminProjectsManager({ initialProjects }: Props) {
               className="w-full rounded-xl border border-slate-300 px-3 py-2 outline-none focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:focus:border-slate-400"
             />
           </label>
-          <label className="space-y-1 text-sm sm:col-span-2">
-            <span>Summary</span>
-            <textarea
-              rows={3}
-              value={draft.summary}
-              onChange={(event) => {
-                const value = event.currentTarget.value;
-                updateDraftField("summary", value);
-              }}
-              className="w-full rounded-xl border border-slate-300 px-3 py-2 outline-none focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:focus:border-slate-400"
-            />
-          </label>
           <label className="space-y-1 text-sm">
             <span>Role</span>
             <input
@@ -570,6 +558,21 @@ export function AdminProjectsManager({ initialProjects }: Props) {
               }}
               className="w-full rounded-xl border border-slate-300 px-3 py-2 outline-none focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:focus:border-slate-400"
             />
+          </label>
+          <label className="space-y-1 text-sm sm:col-span-2">
+            <span>Summary</span>
+            <textarea
+              rows={6}
+              value={draft.summary}
+              onChange={(event) => {
+                const value = event.currentTarget.value;
+                updateDraftField("summary", value);
+              }}
+              className="w-full rounded-xl border border-slate-300 px-3 py-2 outline-none focus:border-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:focus:border-slate-400"
+            />
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Supports markdown for line breaks, bullet lists, and bold text.
+            </p>
           </label>
           <label className="space-y-1 text-sm">
             <span>Status</span>

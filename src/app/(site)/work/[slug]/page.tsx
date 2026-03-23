@@ -15,6 +15,21 @@ type WorkDetailPageProps = {
 
 export const dynamicParams = false;
 
+function stripMarkdown(value: string) {
+  return value
+    .replace(/\r\n/g, "\n")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/^>\s?/gm, "")
+    .replace(/^[-*+]\s+/gm, "")
+    .replace(/^\d+\.\s+/gm, "")
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/[*_~`>#]/g, "")
+    .replace(/\n+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export async function generateStaticParams() {
   const projects = await getPublishedProjects();
   return projects.map((project) => ({ slug: project.slug }));
@@ -34,9 +49,11 @@ export async function generateMetadata({
     });
   }
 
+  const summaryText = stripMarkdown(project.summary);
+
   return buildMetadata({
     title: `${project.title} - Case Study`,
-    description: project.summary,
+    description: summaryText,
     path: `/work/${project.slug}`,
     type: "article",
   });
@@ -50,11 +67,13 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
     notFound();
   }
 
+  const summaryText = stripMarkdown(project.summary);
+
   const projectJsonLd = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
     name: project.title,
-    description: project.summary,
+    description: summaryText,
     url: toAbsoluteUrl(`/work/${project.slug}`),
     creator: {
       "@type": "Person",

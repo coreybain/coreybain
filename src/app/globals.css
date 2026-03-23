@@ -57,6 +57,36 @@ body {
     var(--color-background);
 }
 
+html.ask-page,
+body.ask-page {
+  height: 100%;
+  overflow: hidden;
+}
+
+body.ask-page .site-shell {
+  display: flex;
+  min-height: 100dvh;
+  height: 100dvh;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+body.ask-page .site-shell > main {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+body.ask-page .site-shell > main > * {
+  display: flex;
+  min-height: 0;
+  height: 100%;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
 main {
   position: relative;
   isolation: isolate;

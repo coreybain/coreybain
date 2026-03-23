@@ -60,6 +60,14 @@ type ExperimentDraft = {
   linkPost: string;
 };
 
+type ActionFeedbackTone = "pending" | "success" | "error";
+
+type ActionFeedback = {
+  key: string;
+  tone: ActionFeedbackTone;
+  message: string;
+};
+
 function linesToArray(value: string) {
   return value
     .split("\n")
@@ -175,7 +183,7 @@ export function AdminSettingsManager({
   const [experiments, setExperiments] = useState(
     initialExperiments.map(toExperimentDraft)
   );
-  const [notice, setNotice] = useState<string | null>(null);
+  const [actionFeedback, setActionFeedback] = useState<ActionFeedback | null>(null);
   const [busyKey, setBusyKey] = useState<string | null>(null);
   const { isAuthenticated, isLoading } = useConvexAuth();
 
@@ -200,6 +208,18 @@ export function AdminSettingsManager({
     () => [...experiments].sort((a, b) => a.sortOrder - b.sortOrder),
     [experiments]
   );
+
+  const setPendingFeedback = (key: string, message: string) => {
+    setActionFeedback({ key, tone: "pending", message });
+  };
+
+  const setSuccessFeedback = (key: string, message: string) => {
+    setActionFeedback({ key, tone: "success", message });
+  };
+
+  const setErrorFeedback = (key: string, message: string) => {
+    setActionFeedback({ key, tone: "error", message });
+  };
 
   const updateCapabilityField = <Key extends keyof CapabilityDraft>(
     itemKey: string,
@@ -233,22 +253,58 @@ export function AdminSettingsManager({
 
   const canMutate = isAuthenticated && !isLoading;
 
-  const ensureAuthenticated = () => {
+  const ensureAuthenticated = (key: string) => {
     if (canMutate) {
       return true;
     }
 
-    setNotice("Admin auth is still syncing. Refresh or wait a moment, then try again.");
+    setErrorFeedback(
+      key,
+      "Admin auth is still syncing. Refresh or wait a moment, then try again."
+    );
     return false;
   };
 
+  const applyRefreshFeedback = async (key: string, successMessage: string) => {
+    const refreshed = await refreshPublicSiteContent();
+    if (refreshed.ok) {
+      setSuccessFeedback(key, successMessage);
+      return;
+    }
+
+    setErrorFeedback(key, refreshed.message);
+  };
+
+  const renderActionFeedback = (key: string) => {
+    if (!actionFeedback || actionFeedback.key !== key) {
+      return null;
+    }
+
+    const toneClasses =
+      actionFeedback.tone === "success"
+        ? "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900/70 dark:bg-emerald-950/40 dark:text-emerald-200"
+        : actionFeedback.tone === "error"
+          ? "border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-900/70 dark:bg-rose-950/40 dark:text-rose-200"
+          : "border-sky-200 bg-sky-50 text-sky-800 dark:border-sky-900/70 dark:bg-sky-950/40 dark:text-sky-200";
+
+    return (
+      <p
+        aria-live={actionFeedback.tone === "error" ? "assertive" : "polite"}
+        role={actionFeedback.tone === "error" ? "alert" : "status"}
+        className={`rounded-xl border px-3 py-2 text-sm ${toneClasses}`}
+      >
+        {actionFeedback.message}
+      </p>
+    );
+  };
+
   const saveProfileSection = () => {
-    setNotice(null);
-    if (!ensureAuthenticated()) {
+    if (!ensureAuthenticated("profile")) {
       return;
     }
     startTransition(async () => {
       setBusyKey("profile");
+      setPendingFeedback("profile", "Saving profile...");
       try {
         const summaryItems = linesToArray(summary);
         if (!headline.trim() || !subheadline.trim() || summaryItems.length === 0) {
@@ -262,11 +318,13 @@ export function AdminSettingsManager({
           summary: summaryItems,
           socialLinks: toSocialLinks(socialLinks),
         });
-        const refreshed = await refreshPublicSiteContent();
-        setNotice(refreshed.ok ? "Profile saved." : refreshed.message);
+        await applyRefreshFeedback("profile", "Profile saved.");
         router.refresh();
       } catch (error) {
-        setNotice(error instanceof Error ? error.message : "Could not save profile.");
+        setErrorFeedback(
+          "profile",
+          error instanceof Error ? error.message : "Could not save profile."
+        );
       } finally {
         setBusyKey(null);
       }
@@ -274,12 +332,12 @@ export function AdminSettingsManager({
   };
 
   const saveSiteSettingsSection = () => {
-    setNotice(null);
-    if (!ensureAuthenticated()) {
+    if (!ensureAuthenticated("settings")) {
       return;
     }
     startTransition(async () => {
       setBusyKey("settings");
+      setPendingFeedback("settings", "Saving site settings...");
       try {
         await saveSiteSettings({
           featuredProjectSlugs: csvToArray(featuredProjects),
@@ -287,11 +345,11 @@ export function AdminSettingsManager({
           featuredExperimentSlugs: csvToArray(featuredExperiments),
           notificationEmail: notificationEmail.trim() || undefined,
         });
-        const refreshed = await refreshPublicSiteContent();
-        setNotice(refreshed.ok ? "Site settings saved." : refreshed.message);
+        await applyRefreshFeedback("settings", "Site settings saved.");
         router.refresh();
       } catch (error) {
-        setNotice(
+        setErrorFeedback(
+          "settings",
           error instanceof Error ? error.message : "Could not save site settings."
         );
       } finally {
@@ -358,12 +416,12 @@ export function AdminSettingsManager({
   };
 
   const saveCapabilityRow = (draft: CapabilityDraft) => {
-    setNotice(null);
-    if (!ensureAuthenticated()) {
+    if (!ensureAuthenticated(draft.key)) {
       return;
     }
     startTransition(async () => {
       setBusyKey(draft.key);
+      setPendingFeedback(draft.key, "Saving capability...");
       try {
         if (!draft.slug.trim() || !draft.title.trim() || !draft.summary.trim()) {
           throw new Error("Capability slug, title, and summary are required.");
@@ -381,11 +439,13 @@ export function AdminSettingsManager({
             entry.key === draft.key ? { ...entry, id: String(id) } : entry
           )
         );
-        const refreshed = await refreshPublicSiteContent();
-        setNotice(refreshed.ok ? "Capability saved." : refreshed.message);
+        await applyRefreshFeedback(draft.key, "Capability saved.");
         router.refresh();
       } catch (error) {
-        setNotice(error instanceof Error ? error.message : "Could not save capability.");
+        setErrorFeedback(
+          draft.key,
+          error instanceof Error ? error.message : "Could not save capability."
+        );
       } finally {
         setBusyKey(null);
       }
@@ -393,22 +453,24 @@ export function AdminSettingsManager({
   };
 
   const removeCapabilityRow = (draft: CapabilityDraft) => {
-    setNotice(null);
-    if (!ensureAuthenticated()) {
+    if (!ensureAuthenticated(draft.key)) {
       return;
     }
     startTransition(async () => {
       setBusyKey(draft.key);
+      setPendingFeedback(draft.key, "Removing capability...");
       try {
         if (draft.id) {
           await deleteCapability({ id: draft.id as Id<"capabilities"> });
         }
         setCapabilities((current) => current.filter((entry) => entry.key !== draft.key));
-        const refreshed = await refreshPublicSiteContent();
-        setNotice(refreshed.ok ? "Capability removed." : refreshed.message);
+        await applyRefreshFeedback(draft.key, "Capability removed.");
         router.refresh();
       } catch (error) {
-        setNotice(error instanceof Error ? error.message : "Could not remove capability.");
+        setErrorFeedback(
+          draft.key,
+          error instanceof Error ? error.message : "Could not remove capability."
+        );
       } finally {
         setBusyKey(null);
       }
@@ -416,12 +478,12 @@ export function AdminSettingsManager({
   };
 
   const saveExperienceRow = (draft: ExperienceDraft) => {
-    setNotice(null);
-    if (!ensureAuthenticated()) {
+    if (!ensureAuthenticated(draft.key)) {
       return;
     }
     startTransition(async () => {
       setBusyKey(draft.key);
+      setPendingFeedback(draft.key, "Saving experience entry...");
       try {
         if (!draft.company.trim() || !draft.title.trim() || !draft.startDate.trim()) {
           throw new Error("Company, title, and start date are required.");
@@ -442,11 +504,11 @@ export function AdminSettingsManager({
             entry.key === draft.key ? { ...entry, id: String(id) } : entry
           )
         );
-        const refreshed = await refreshPublicSiteContent();
-        setNotice(refreshed.ok ? "Experience entry saved." : refreshed.message);
+        await applyRefreshFeedback(draft.key, "Experience entry saved.");
         router.refresh();
       } catch (error) {
-        setNotice(
+        setErrorFeedback(
+          draft.key,
           error instanceof Error ? error.message : "Could not save experience entry."
         );
       } finally {
@@ -456,12 +518,12 @@ export function AdminSettingsManager({
   };
 
   const removeExperienceRow = (draft: ExperienceDraft) => {
-    setNotice(null);
-    if (!ensureAuthenticated()) {
+    if (!ensureAuthenticated(draft.key)) {
       return;
     }
     startTransition(async () => {
       setBusyKey(draft.key);
+      setPendingFeedback(draft.key, "Removing experience entry...");
       try {
         if (draft.id) {
           await deleteExperienceEntry({
@@ -471,11 +533,11 @@ export function AdminSettingsManager({
         setExperienceEntries((current) =>
           current.filter((entry) => entry.key !== draft.key)
         );
-        const refreshed = await refreshPublicSiteContent();
-        setNotice(refreshed.ok ? "Experience entry removed." : refreshed.message);
+        await applyRefreshFeedback(draft.key, "Experience entry removed.");
         router.refresh();
       } catch (error) {
-        setNotice(
+        setErrorFeedback(
+          draft.key,
           error instanceof Error ? error.message : "Could not remove experience entry."
         );
       } finally {
@@ -485,12 +547,12 @@ export function AdminSettingsManager({
   };
 
   const saveExperimentRow = (draft: ExperimentDraft) => {
-    setNotice(null);
-    if (!ensureAuthenticated()) {
+    if (!ensureAuthenticated(draft.key)) {
       return;
     }
     startTransition(async () => {
       setBusyKey(draft.key);
+      setPendingFeedback(draft.key, "Saving experiment...");
       try {
         if (!draft.slug.trim() || !draft.title.trim() || !draft.summary.trim()) {
           throw new Error("Experiment slug, title, and summary are required.");
@@ -516,11 +578,13 @@ export function AdminSettingsManager({
             entry.key === draft.key ? { ...entry, id: String(id) } : entry
           )
         );
-        const refreshed = await refreshPublicSiteContent();
-        setNotice(refreshed.ok ? "Experiment saved." : refreshed.message);
+        await applyRefreshFeedback(draft.key, "Experiment saved.");
         router.refresh();
       } catch (error) {
-        setNotice(error instanceof Error ? error.message : "Could not save experiment.");
+        setErrorFeedback(
+          draft.key,
+          error instanceof Error ? error.message : "Could not save experiment."
+        );
       } finally {
         setBusyKey(null);
       }
@@ -528,22 +592,24 @@ export function AdminSettingsManager({
   };
 
   const removeExperimentRow = (draft: ExperimentDraft) => {
-    setNotice(null);
-    if (!ensureAuthenticated()) {
+    if (!ensureAuthenticated(draft.key)) {
       return;
     }
     startTransition(async () => {
       setBusyKey(draft.key);
+      setPendingFeedback(draft.key, "Removing experiment...");
       try {
         if (draft.id) {
           await deleteExperiment({ id: draft.id as Id<"experiments"> });
         }
         setExperiments((current) => current.filter((entry) => entry.key !== draft.key));
-        const refreshed = await refreshPublicSiteContent();
-        setNotice(refreshed.ok ? "Experiment removed." : refreshed.message);
+        await applyRefreshFeedback(draft.key, "Experiment removed.");
         router.refresh();
       } catch (error) {
-        setNotice(error instanceof Error ? error.message : "Could not remove experiment.");
+        setErrorFeedback(
+          draft.key,
+          error instanceof Error ? error.message : "Could not remove experiment."
+        );
       } finally {
         setBusyKey(null);
       }
@@ -606,7 +672,7 @@ export function AdminSettingsManager({
             />
           </label>
         </div>
-        <div className="mt-4">
+        <div className="mt-4 flex flex-col items-start gap-2">
           <button
             type="button"
             onClick={saveProfileSection}
@@ -615,6 +681,7 @@ export function AdminSettingsManager({
           >
             {busyKey === "profile" ? "Saving..." : "Save profile"}
           </button>
+          {renderActionFeedback("profile")}
         </div>
       </section>
 
@@ -654,7 +721,7 @@ export function AdminSettingsManager({
             />
           </label>
         </div>
-        <div className="mt-4">
+        <div className="mt-4 flex flex-col items-start gap-2">
           <button
             type="button"
             onClick={saveSiteSettingsSection}
@@ -663,6 +730,7 @@ export function AdminSettingsManager({
           >
             {busyKey === "settings" ? "Saving..." : "Save site settings"}
           </button>
+          {renderActionFeedback("settings")}
         </div>
       </section>
 
@@ -742,23 +810,26 @@ export function AdminSettingsManager({
                   />
                 </label>
               </div>
-              <div className="mt-3 flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => saveCapabilityRow(capability)}
-                  disabled={busyKey === capability.key || !canMutate}
-                  className="rounded-full border border-slate-300 px-3 py-1 text-xs transition-colors hover:bg-slate-100 disabled:opacity-60 dark:border-slate-700 dark:hover:bg-slate-800"
-                >
-                  Save
-                </button>
-                <button
-                  type="button"
-                  onClick={() => removeCapabilityRow(capability)}
-                  disabled={busyKey === capability.key || !canMutate}
-                  className="rounded-full border border-rose-300 px-3 py-1 text-xs text-rose-700 transition-colors hover:bg-rose-50 disabled:opacity-60 dark:border-rose-800 dark:text-rose-300 dark:hover:bg-rose-950/40"
-                >
-                  Delete
-                </button>
+              <div className="mt-3 flex flex-col items-start gap-2">
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => saveCapabilityRow(capability)}
+                    disabled={busyKey === capability.key || !canMutate}
+                    className="rounded-full border border-slate-300 px-3 py-1 text-xs transition-colors hover:bg-slate-100 disabled:opacity-60 dark:border-slate-700 dark:hover:bg-slate-800"
+                  >
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => removeCapabilityRow(capability)}
+                    disabled={busyKey === capability.key || !canMutate}
+                    className="rounded-full border border-rose-300 px-3 py-1 text-xs text-rose-700 transition-colors hover:bg-rose-50 disabled:opacity-60 dark:border-rose-800 dark:text-rose-300 dark:hover:bg-rose-950/40"
+                  >
+                    Delete
+                  </button>
+                </div>
+                {renderActionFeedback(capability.key)}
               </div>
             </article>
           ))}
@@ -875,23 +946,26 @@ export function AdminSettingsManager({
                   />
                 </label>
               </div>
-              <div className="mt-3 flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => saveExperienceRow(entry)}
-                  disabled={busyKey === entry.key || !canMutate}
-                  className="rounded-full border border-slate-300 px-3 py-1 text-xs transition-colors hover:bg-slate-100 disabled:opacity-60 dark:border-slate-700 dark:hover:bg-slate-800"
-                >
-                  Save
-                </button>
-                <button
-                  type="button"
-                  onClick={() => removeExperienceRow(entry)}
-                  disabled={busyKey === entry.key || !canMutate}
-                  className="rounded-full border border-rose-300 px-3 py-1 text-xs text-rose-700 transition-colors hover:bg-rose-50 disabled:opacity-60 dark:border-rose-800 dark:text-rose-300 dark:hover:bg-rose-950/40"
-                >
-                  Delete
-                </button>
+              <div className="mt-3 flex flex-col items-start gap-2">
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => saveExperienceRow(entry)}
+                    disabled={busyKey === entry.key || !canMutate}
+                    className="rounded-full border border-slate-300 px-3 py-1 text-xs transition-colors hover:bg-slate-100 disabled:opacity-60 dark:border-slate-700 dark:hover:bg-slate-800"
+                  >
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => removeExperienceRow(entry)}
+                    disabled={busyKey === entry.key || !canMutate}
+                    className="rounded-full border border-rose-300 px-3 py-1 text-xs text-rose-700 transition-colors hover:bg-rose-50 disabled:opacity-60 dark:border-rose-800 dark:text-rose-300 dark:hover:bg-rose-950/40"
+                  >
+                    Delete
+                  </button>
+                </div>
+                {renderActionFeedback(entry.key)}
               </div>
             </article>
           ))}
@@ -1040,34 +1114,31 @@ export function AdminSettingsManager({
                   Featured
                 </label>
               </div>
-              <div className="mt-3 flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => saveExperimentRow(experiment)}
-                  disabled={busyKey === experiment.key || !canMutate}
-                  className="rounded-full border border-slate-300 px-3 py-1 text-xs transition-colors hover:bg-slate-100 disabled:opacity-60 dark:border-slate-700 dark:hover:bg-slate-800"
-                >
-                  Save
-                </button>
+              <div className="mt-3 flex flex-col items-start gap-2">
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => saveExperimentRow(experiment)}
+                    disabled={busyKey === experiment.key || !canMutate}
+                    className="rounded-full border border-slate-300 px-3 py-1 text-xs transition-colors hover:bg-slate-100 disabled:opacity-60 dark:border-slate-700 dark:hover:bg-slate-800"
+                  >
+                    Save
+                  </button>
                   <button
                     type="button"
                     onClick={() => removeExperimentRow(experiment)}
                     disabled={busyKey === experiment.key || !canMutate}
                     className="rounded-full border border-rose-300 px-3 py-1 text-xs text-rose-700 transition-colors hover:bg-rose-50 disabled:opacity-60 dark:border-rose-800 dark:text-rose-300 dark:hover:bg-rose-950/40"
                   >
-                  Delete
-                </button>
+                    Delete
+                  </button>
+                </div>
+                {renderActionFeedback(experiment.key)}
               </div>
             </article>
           ))}
         </div>
       </section>
-
-      {notice ? (
-        <p className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
-          {notice}
-        </p>
-      ) : null}
     </div>
   );
 }

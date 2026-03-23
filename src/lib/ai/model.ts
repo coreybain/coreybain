@@ -1,7 +1,7 @@
 import { anthropic } from "@ai-sdk/anthropic";
 import { gateway } from "@ai-sdk/gateway";
 
-const gatewayModelId = "anthropic/claude-sonnet-4.6";
+const gatewayModelId = "openai/gpt-5.4-mini";
 const anthropicModelId = "claude-sonnet-4-6";
 
 export function getTextModelInfo() {
@@ -30,6 +30,6 @@ export function getTextModel() {
   }
 
   throw new Error(
-    "AI_GATEWAY_API_KEY is required in production. Set it or enable a development fallback locally."
+    "AI_GATEWAY_API_KEY is required in production. Set it or enable a development fallback locally.",
   );
 }

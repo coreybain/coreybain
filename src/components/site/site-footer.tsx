@@ -5,8 +5,8 @@ export async function SiteFooter() {
   const profile = await getProfile();
 
   return (
-    <footer className="border-t border-[color:var(--color-border)] py-8">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+    <footer className="shrink-0 border-t border-[color:var(--color-border)]">
+      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-4 px-5 py-4 sm:px-8">
         <p className="text-sm text-[color:var(--color-muted-foreground)]">
           {profile.name} / Building thoughtful software across web + Apple
           platforms.

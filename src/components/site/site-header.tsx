@@ -32,7 +32,7 @@ export function SiteHeader() {
   const isMobileMenuOpen = mobileMenuPathname === pathname;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[color:var(--color-border)]/80 bg-[color:var(--color-surface)]/80 backdrop-blur-lg">
+    <header className="sticky top-0 z-40 shrink-0 border-b border-[color:var(--color-border)]/80 bg-[color:var(--color-surface)]/80 backdrop-blur-lg">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
         <Link
           href="/"

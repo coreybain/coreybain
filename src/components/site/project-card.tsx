@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 import type { Project } from "@/lib/site/types";
 
 type ProjectCardProps = {
@@ -23,12 +24,15 @@ export function ProjectCard({ project }: ProjectCardProps) {
       <p className="text-xs font-mono tracking-[0.12em] uppercase text-[color:var(--color-muted-foreground)]">
         {project.company}
       </p>
+      <p className="mt-2 text-sm text-[color:var(--color-foreground)]">
+        {project.tagline}
+      </p>
       <p className="text-sm text-[color:var(--color-muted-foreground)]">
         {project.role} / {project.period}
       </p>
-      <p className="mt-3 max-w-3xl text-[color:var(--color-muted-foreground)]">
-        {project.summary}
-      </p>
+      <div className="mt-3 max-w-3xl text-[color:var(--color-muted-foreground)] [&>*+*]:mt-3 [&_a]:font-medium [&_a]:underline [&_li]:whitespace-pre-wrap [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:pl-5 [&_p]:whitespace-pre-wrap [&_strong]:font-semibold [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5">
+        <ReactMarkdown>{project.summary}</ReactMarkdown>
+      </div>
       <div className="mt-4 flex flex-wrap gap-2">
         {project.stack.slice(0, 5).map((tech) => (
           <span

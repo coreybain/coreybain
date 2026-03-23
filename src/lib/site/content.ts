@@ -23,39 +23,43 @@ export const profile = {
 
 export const capabilities: Capability[] = [
   {
-    slug: "product-engineering",
-    title: "Product Engineering",
-    summary: "Ship user-facing software from concept to reliable production.",
+    slug: "system-architecture-scale",
+    title: "System Architecture & Scale",
+    summary:
+      "Design distributed systems, multi-tenant SaaS platforms, and event-driven architectures.",
     proofPoints: [
-      "Leads delivery from discovery through release",
-      "Balances customer value, technical quality, and speed",
+      "Distributed systems and modular service boundaries",
+      "Multi-tenant SaaS design with scale and operability in mind",
     ],
   },
   {
-    slug: "saaS-architecture",
-    title: "SaaS Architecture",
-    summary: "Design maintainable systems that can scale with product growth.",
+    slug: "ai-native-product-development",
+    title: "AI-Native Product Development",
+    summary:
+      "Integrate LLMs into real workflows (not demos): automation, agents, retrieval, copilots.",
     proofPoints: [
-      "Strong foundation in modular services and clean architecture",
-      "Hands-on CI/CD and production hardening",
+      "Applied AI features grounded in production workflows",
+      "Agents, retrieval, and copilots designed for practical use",
     ],
   },
   {
-    slug: "apple-platforms",
-    title: "Apple Platforms",
-    summary: "Build native experiences with Swift and SwiftUI.",
+    slug: "real-time-systems",
+    title: "Real-Time Systems",
+    summary:
+      "Build low-latency systems (auctions, tracking, live updates, streaming).",
     proofPoints: [
-      "Production iOS work with offline-first and sync-heavy workflows",
-      "Comfortable across Swift, SwiftUI, and Objective-C contexts",
+      "Low-latency event flows and live state updates",
+      "Realtime user experiences with operational reliability",
     ],
   },
   {
-    slug: "ai-integration",
-    title: "AI Product Integration",
-    summary: "Integrate AI into real product workflows, not one-off demos.",
+    slug: "end-to-end-ownership",
+    title: "End-to-End Ownership",
+    summary:
+      "From product ideation → architecture → delivery → scaling → optimisation.",
     proofPoints: [
-      "RAG-style knowledge experiences grounded in domain content",
-      "Structured AI flows for intake, summarization, and guidance",
+      "Hands-on delivery from concept through production scaling",
+      "Balances product direction, technical design, and execution",
     ],
   },
 ];
