@@ -830,11 +830,12 @@ export const saveProject = mutation({
   handler: async (ctx, args) => {
     await requireAdmin(ctx);
     const { id, ...rest } = args;
+    const visibleOn: ProjectLocation[] =
+      rest.visibleOn && rest.visibleOn.length > 0 ? rest.visibleOn : ["work"];
     const payload = {
       ...rest,
       type: rest.type ?? "project",
-      visibleOn:
-        rest.visibleOn && rest.visibleOn.length > 0 ? rest.visibleOn : ["work"],
+      visibleOn,
     };
 
     if (id) {

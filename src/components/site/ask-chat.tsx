@@ -4,8 +4,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { DefaultChatTransport } from "ai";
 import { useChat } from "@ai-sdk/react";
 import type { UIMessage } from "ai";
-import ReactMarkdown from "react-markdown";
 import { ASK_COREY_HANDOFF_KEY, askCoreyPrompts } from "@/lib/site/ask-prompts";
+import { Markdown } from "@/components/ui/markdown";
 
 type DisplayMessage = Pick<UIMessage, "id" | "role" | "parts">;
 type TextPart = Extract<UIMessage["parts"][number], { type: "text" }>;
@@ -203,9 +203,7 @@ export function AskChat() {
 
                 <div className="mt-2 text-sm leading-7 text-[color:var(--color-foreground)] [&>*+*]:mt-3 [&_a]:font-medium [&_a]:underline [&_code]:rounded-md [&_code]:bg-[color:var(--color-surface-alt)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.9em] [&_h1]:text-xl [&_h1]:font-semibold [&_h2]:text-lg [&_h2]:font-semibold [&_h3]:text-base [&_h3]:font-semibold [&_li]:whitespace-pre-wrap [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:pl-5 [&_p]:whitespace-pre-wrap [&_pre]:overflow-x-auto [&_pre]:rounded-xl [&_pre]:bg-[color:var(--color-surface-alt)] [&_pre]:p-3 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_strong]:font-semibold [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5">
                   {getTextParts(message).map((part, index) => (
-                    <ReactMarkdown key={`${message.id}-text-${index}`}>
-                      {part.text}
-                    </ReactMarkdown>
+                    <Markdown key={`${message.id}-text-${index}`}>{part.text}</Markdown>
                   ))}
                 </div>
 
